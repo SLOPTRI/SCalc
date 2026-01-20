@@ -6,20 +6,20 @@
     <color name="teal_200">#03DAC5</color>
     <color name="teal_700">#018786</color>
     <color name="red">#9E0005</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
 
-    <color name="scalc_primary">#00B882</color>
+    <color name="scalc_primary">#00A884</color>
 
-    <color name="scalc_dark">#075E54</color>
+    <color name="scalc_dark">#E0F2F1</color>
     <color name="text_primary">@color/scalc_dark</color>
 
-    <color name="scalc_background">#F5F7F6</color>
+    <color name="scalc_background">#000000</color>
 
-    <color name="scalc_card_background">#FFFFFF</color>
+    <color name="scalc_card_background">#1C1C1C</color>
 
-    <color name="text_secondary">#5F7570</color>
-    <color name="text_hint">#AEBCB9</color>
+    <color name="text_secondary">#B2DFDB</color>
+    <color name="text_hint">#80CBC4</color>
 
     <color name="scalc_accent">#4DB6AC</color>
 </resources>

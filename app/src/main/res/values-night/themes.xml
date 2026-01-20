@@ -1,7 +1,17 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
     <style name="Base.Theme.SCalc" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+        <item name="colorPrimary">@color/scalc_primary</item>
+        <item name="colorPrimaryVariant">@color/scalc_primary</item>
+        <item name="colorOnPrimary">@color/black</item> <item name="colorSecondary">@color/scalc_accent</item>
+
+        <item name="android:colorBackground">@color/scalc_background</item>
+        <item name="android:windowBackground">@color/scalc_background</item>
+
+        <item name="android:textColor">@color/text_primary</item>
+
+        <item name="android:statusBarColor">@color/black</item> <item name="android:windowLightStatusBar">false</item>
     </style>
+
+    <style name="Theme.SCalc" parent="Base.Theme.SCalc" />
 </resources>
