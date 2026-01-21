@@ -4,11 +4,11 @@ public class Jornada {
 
     private int id;
     private int id_ticket;
-    private int fecha;
+    private String fecha;
     private int cant_pedidos;
     private double cant_horas;
 
-    public Jornada(int id, int id_ticket, int fecha, int cant_pedidos, double cant_horas) {
+    public Jornada(int id, int id_ticket, String fecha, int cant_pedidos, double cant_horas) {
         this.id = id;
         this.id_ticket = id_ticket;
         this.fecha = fecha;
@@ -35,11 +35,11 @@ public class Jornada {
         this.id_ticket = id_ticket;
     }
 
-    public int getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(int fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 

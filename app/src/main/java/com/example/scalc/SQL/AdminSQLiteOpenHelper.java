@@ -9,6 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.scalc.Model.Jornada;
 import com.example.scalc.Model.Ticket;
 import com.example.scalc.Model.Usuario;
 
@@ -20,7 +21,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     // 1. Nombre de la BD y su versión
     private static final String DATABASE_NAME = "scalc_database.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 7;
 
     // 2. Nombres de las Tablas
     public static final String TABLA_USUARIO = "usuario";
@@ -51,7 +52,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String CREAR_TABLA_JORNADA = "CREATE TABLE " + TABLA_JORNADA + " (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "id_ticket INTEGER, " +
-            "fecha INTEGER, " +
+            "fecha TEXT, " +
             "cant_pedidos INTEGER, " +
             "cant_horas REAL, " +
             "FOREIGN KEY(id_ticket) REFERENCES " + TABLA_TICKET + "(id))";
@@ -91,15 +92,22 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public Usuario getDatosUsuario(){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_USUARIO + " LIMIT" + 1, null);
-        cursor.moveToFirst();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_USUARIO, null);
 
-        return new Usuario(
-                cursor.getInt(0),
-                cursor.getString(1),
-                cursor.getDouble(2),
-                cursor.getDouble(3)
-        );
+        Usuario usuario = null;
+
+        if (cursor.moveToFirst()) {
+            usuario = new Usuario(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getDouble(2),
+                    cursor.getDouble(3)
+            );
+        }
+
+        cursor.close();
+
+        return usuario;
     }
 
     public void actualizarUser(String nombre, double tarifa_hora, double tarifa_pedido){
@@ -114,51 +122,73 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertarJornada(){
+    public void insertarJornada(String fechaString,int numeroPedidos, double numeroHoras){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         // Obtener ticket actual
-        Ticket ticket = getTicketAnioMes(LocalDate.now().getYear(), selectorMes(LocalDate.now().getMonthValue()));
+        Ticket ticket = getTicketActual();
+
+        if(ticket == null){
+            ticket = insertarTicket();
+        }
 
         values.put("id_ticket", ticket.getId());
-        values.put("fecha", LocalDate.now().toString());
+        values.put("fecha", fechaString);
+        values.put("cant_pedidos", numeroPedidos);
+        values.put("cant_horas", numeroHoras);
 
+        db.insert(TABLA_JORNADA, null, values);
+        db.close();
 
+        asignarHorasPedidosTicket(ticket);
     }
 
     public Ticket getTicketAnioMes(int anioBuscado, String mesBuscado){
         List<Ticket> tickets = getTickets();
 
+        if (tickets == null) return null;
+
         for (Ticket ticket : tickets) {
-            if(ticket.getAnio() == anioBuscado && ticket.getMes().equals(mesBuscado)){
-                return ticket;
+
+            if(ticket != null && ticket.getMes() != null && mesBuscado != null) {
+
+                if(ticket.getAnio() == anioBuscado && ticket.getMes().equals(mesBuscado)){
+                    return ticket;
+                }
             }
         }
         return null;
     }
 
-    public void insertarTicket(){
+    public Ticket insertarTicket(){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        int mesInt = LocalDate.now().getMonthValue();
+        String mes = selectorMes(mesInt);
+
+        Ticket ticket = new Ticket(0, mes, getDatosUsuario());
+        ticket.setAnio(LocalDate.now().getYear());
+        ticket.setEstado("activo");
+        ticket.setTotal_pedidos(0);
+        ticket.setTotal_horas(0);
+        ticket.setSalario_total(0);
+
         values.put("id_usuario", 1);
         values.put("anio", LocalDate.now().getYear());
+        values.put("mes", mes);
         values.put("estado", "activo");
         values.put("salario_total", 0);
         values.put("total_horas", 0);
         values.put("total_pedidos", 0);
 
-        int mesInt = LocalDate.now().getMonthValue();
-        String mes = selectorMes(mesInt);
 
-        if(!mes.equals("Error")){
-            values.put("mes", mes);
-        }
-
-        db.insert(TABLA_TICKET, null, values);
+        long id = db.insert(TABLA_TICKET, null, values);
+        ticket.setId((int) id);
         db.close();
 
+        return ticket;
     }
 
     public List<Ticket> getTickets() {
@@ -182,7 +212,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
             }while (cursor.moveToNext());
         }
-
+        cursor.close();
         return tickets;
     }
 
@@ -213,8 +243,66 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
             case 12:
                 return "Diciembre";
             default:
-                return "Error";
+                return "";
         }
+    }
+
+    public List<Jornada> getJornadas(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_JORNADA + " WHERE id_ticket = " + id + " ORDER BY id DESC", null);
+        List<Jornada> jornadas = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+            do{
+
+                Jornada newJornada = new Jornada(cursor.getInt(0), id, cursor.getString(2), cursor.getInt(3),
+                        cursor.getDouble(4));
+
+                jornadas.add(newJornada);
+
+            } while ( cursor.moveToNext() );
+        }
+
+        return jornadas;
+    }
+
+    public void asignarHorasPedidosTicket(Ticket ticket) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        double totalHoras = 0.0;
+        int totalPedidos = 0;
+
+        for (Jornada jornada : getJornadas(ticket.getId())) {
+            totalHoras += jornada.getCant_horas();
+            totalPedidos += jornada.getCant_pedidos();
+        }
+
+        ticket.setTotal_horas(totalHoras);
+        ticket.setTotal_pedidos(totalPedidos);
+        ticket.calcularSalarioTotal();
+
+        Usuario usr = getDatosUsuario();
+
+        values.put("total_horas", ticket.getTotal_horas());
+        values.put("total_pedidos", ticket.getTotal_pedidos());
+        values.put("salario_total", ticket.getSalario_total());
+
+        db.update(TABLA_TICKET, values, "id = " + ticket.getId(), null);
+        db.close();
+    }
+
+    public Ticket getTicketActual(){
+        return getTicketAnioMes(LocalDate.now().getYear(), selectorMes(LocalDate.now().getMonthValue()));
+    }
+
+    public void forzarRecalcularTicket(){
+
+        Ticket ticket = getTicketActual();
+
+        if(ticket != null){
+            asignarHorasPedidosTicket(ticket);
+        }
+
     }
 
 }

@@ -17,7 +17,7 @@
         android:textColor="@color/text_primary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginTop="40dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardResumen"

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Registrar Jornada"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/scalc_primary"
@@ -24,7 +25,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha (DD/MM/AAAA)"
+        android:hint="Fecha (AAAA-MM-DD)"
         android:textColorHint="@color/text_primary"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/tvTituloJornada">
@@ -70,13 +71,29 @@
             android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardarJornada"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="60dp"
-        android:text="Guardar Datos"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:backgroundTint="@color/scalc_primary"
+        android:text="Guardar Datos"
+        android:textColor="@color/white"
         app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <CheckBox
+        android:id="@+id/cbFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Modificar Fecha"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/scalc_dark"
+        app:layout_constraintTop_toBottomOf="@id/tilHoras"
+        app:layout_constraintStart_toStartOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

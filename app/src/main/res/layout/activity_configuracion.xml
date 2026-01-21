@@ -15,7 +15,7 @@
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/scalc_primary"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -121,7 +121,7 @@
         android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="@color/scalc_primary"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="24dp"/>
