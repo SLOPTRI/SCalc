@@ -36,25 +36,25 @@ public class NuevaJornadaActivity extends AppCompatActivity {
         etHoras = findViewById(R.id.etHoras);
         cbFecha = findViewById(R.id.cbFecha);
         etFecha.setEnabled(false);
+        etFecha.setText(LocalDate.now().toString());
 
 
         cbFecha.setOnClickListener(v -> {
-            if(cbFecha.isChecked()){
-                etFecha.setEnabled(true);
-            }else{
-                etFecha.setEnabled(false);
-            }
+            revidaEstadoCheckBox();
         });
-
-
-        etFecha.setText(LocalDate.now().toString());
 
         btnGuardarJornada.setOnClickListener(v -> {
             guardaJornada();
         });
     }
 
-
+    public void revidaEstadoCheckBox(){
+        if(cbFecha.isChecked()){
+            etFecha.setEnabled(true);
+        }else{
+            etFecha.setEnabled(false);
+        }
+    }
     public void guardaJornada(){
 
         String fechaString = etFecha.getText().toString();

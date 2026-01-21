@@ -186,7 +186,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
         long id = db.insert(TABLA_TICKET, null, values);
         ticket.setId((int) id);
-        db.close();
 
         return ticket;
     }
