@@ -60,6 +60,7 @@ public class NuevaJornadaActivity extends AppCompatActivity {
         String fechaString = etFecha.getText().toString();
         String nPedidos = etPedidos.getText().toString();
         String nHoras = etHoras.getText().toString();
+        Double horas = Double.parseDouble(nHoras);
 
         if(fechaString.isEmpty()){
             etFecha.setError("Campo requerido");
@@ -69,15 +70,14 @@ public class NuevaJornadaActivity extends AppCompatActivity {
             etPedidos.setError("Campo requerido, indicar 0 si es necesario");
             return;
         }
-        if(nHoras.isEmpty() || Integer.parseInt(nHoras) < 1){
+        if(nHoras.isEmpty() || horas < 1.0){
             etHoras.setError("Campo requerido, no puede ser menor a 1");
             return;
         }
 
         int numeroPedidos = Integer.parseInt(nPedidos);
-        double numeroHoras = Double.parseDouble(nHoras);
 
-        admin.insertarJornada(fechaString, numeroPedidos, numeroHoras);
+        admin.insertarJornada(fechaString, numeroPedidos, horas);
         finish();
     }
 }

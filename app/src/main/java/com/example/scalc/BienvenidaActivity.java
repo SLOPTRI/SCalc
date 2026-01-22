@@ -56,8 +56,6 @@ public class BienvenidaActivity extends AppCompatActivity {
             etPrecioPedidoUser.setError("El precio por pedido es obligatorio");
             etPrecioPedidoUser.requestFocus();
         } else{
-            Toast.makeText(this, "Bienvenido " + nombreUser, Toast.LENGTH_SHORT).show();
-            admin.insertarUser(nombreUser, Double.parseDouble(precioHoraUser), Double.parseDouble(precioPedidoUser));
             abreMain();
         }
 

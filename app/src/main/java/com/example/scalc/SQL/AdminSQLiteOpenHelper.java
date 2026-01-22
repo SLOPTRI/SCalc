@@ -21,7 +21,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     // 1. Nombre de la BD y su versión
     private static final String DATABASE_NAME = "scalc_database.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     // 2. Nombres de las Tablas
     public static final String TABLA_USUARIO = "usuario";

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -109,8 +110,12 @@ public class MainActivity extends AppCompatActivity {
     public void abreTicketActual(){
         Intent intent  = new Intent(MainActivity.this, DetalleTicketActivity.class);
         Ticket ticketActual = admin.getTicketActual();
-        intent.putExtra("ID_TICKET_SELECCIONADO", ticketActual.getId());
-
-        startActivity(intent);
+        if(ticketActual != null){
+            intent.putExtra("ID_TICKET_SELECCIONADO", ticketActual.getId());
+            startActivity(intent);
+        }else{
+            Toast toast = Toast.makeText(this, "No hay ticket actualmente, cree uno al agregar una jornada", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }
