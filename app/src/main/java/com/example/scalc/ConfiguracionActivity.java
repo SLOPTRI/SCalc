@@ -48,4 +48,34 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         finish();
     }
+
+    public void enviarReporte(android.view.View view) {
+        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"soporte@scalc.com"});
+        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Fallo en la App");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Hola, he encontrado un error...");
+
+        try {
+            startActivity(android.content.Intent.createChooser(intent, "Enviar email..."));
+        } catch (Exception e) {
+            android.widget.Toast.makeText(this, "No tienes app de correo.", android.widget.Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // REQUISITO 2: Bluetooth (Hardware)
+    @android.annotation.SuppressLint("MissingPermission")
+    public void probarBluetooth(android.view.View view) {
+        android.bluetooth.BluetoothAdapter bt = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+
+        if (bt == null) {
+            android.widget.Toast.makeText(this, "Este móvil no tiene Bluetooth", android.widget.Toast.LENGTH_SHORT).show();
+        } else if (!bt.isEnabled()) {
+            // Pide activar Bluetooth
+            startActivity(new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE));
+        } else {
+            // Simula la conexión
+            android.widget.Toast.makeText(this, "✅ Bluetooth activo. Buscando dispositivos...", android.widget.Toast.LENGTH_LONG).show();
+        }
+    }
 }
