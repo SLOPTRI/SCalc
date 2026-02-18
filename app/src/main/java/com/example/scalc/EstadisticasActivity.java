@@ -197,7 +197,28 @@ public class EstadisticasActivity extends AppCompatActivity {
         }
 
         PieDataSet dataSet = new PieDataSet(entries, esPedidos ? "Pedidos" : "Horas");
-        dataSet.setColors(ColorTemplate.VORDIPLOM_COLORS);
+
+        ArrayList<Integer> colores = new ArrayList<>();
+
+        // Tonos oscuros y saturados (Base)
+        colores.add(Color.parseColor("#00695C")); // Teal Oscuro Profundo
+        colores.add(Color.parseColor("#00897B")); // Teal Medio
+        colores.add(Color.parseColor("#4DB6AC")); // Teal Claro
+        colores.add(Color.parseColor("#80CBC4")); // Teal Muy Claro
+
+        // Variaciones hacia el Verde (Frescura)
+        colores.add(Color.parseColor("#2E7D32")); // Verde Bosque
+        colores.add(Color.parseColor("#43A047")); // Verde Hoja
+        colores.add(Color.parseColor("#66BB6A")); // Verde Pastel
+        colores.add(Color.parseColor("#A5D6A7")); // Verde Agua
+
+        // Variaciones hacia el Azul (Profundidad)
+        colores.add(Color.parseColor("#006064")); // Cyan Oscuro
+        colores.add(Color.parseColor("#0097A7")); // Cyan Medio
+        colores.add(Color.parseColor("#4DD0E1")); // Cyan Claro
+        colores.add(Color.parseColor("#B2EBF2")); // Cyan Muy Claro
+
+        dataSet.setColors(colores);
 
         PieData pieData = new PieData(dataSet);
         pieData.setValueTextSize(12f);
