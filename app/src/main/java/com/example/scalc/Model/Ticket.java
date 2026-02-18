@@ -11,7 +11,12 @@ public class Ticket {
     private int total_pedidos;
     private double total_horas;
     private double salario_total;
-    private String estado;
+    private int estado;
+    private double tarifa_hora;
+    private double tarifa_pedido;
+    private String modalidad;
+
+    // Constructor
 
     public Ticket(int id, String mes, Usuario usuario) {
         this.id = id;
@@ -21,7 +26,10 @@ public class Ticket {
         this.total_pedidos = 0;
         this.total_horas = 0;
         this.salario_total = 0;
-        this.estado = "activo";
+        this.estado = 1;
+        this.tarifa_hora = usuario.getTarifa_hora();
+        this.tarifa_pedido = usuario.getTarifa_pedido();
+        this.modalidad = usuario.getModalidad();
     }
 
     // Getters y Setters
@@ -84,19 +92,43 @@ public class Ticket {
     }
 
 
-    public String getEstado() {
+    public int getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(int estado) {
         this.estado = estado;
+    }
+
+    public double getTarifa_hora() {
+        return tarifa_hora;
+    }
+
+    public void setTarifa_hora(double tarifa_hora) {
+        this.tarifa_hora = tarifa_hora;
+    }
+
+    public double getTarifa_pedido() {
+        return tarifa_pedido;
+    }
+
+    public void setTarifa_pedido(double tarifa_pedido) {
+        this.tarifa_pedido = tarifa_pedido;
+    }
+
+    public String getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
     }
 
     // Se asigna el salario solo si el ticket esta activo, de lo contrario no se modifica.
     public void calcularSalarioTotal() {
-        if(this.estado.equals("activo")){
-            double salario_horas = this.total_horas * this.usuario.getTarifa_hora();
-            double salario_pedidos = this.total_pedidos * this.usuario.getTarifa_pedido();
+        if(this.estado == 1){
+            double salario_horas = this.total_horas * this.tarifa_hora;
+            double salario_pedidos = this.total_pedidos * this.tarifa_pedido;
 
             this.salario_total = salario_horas + salario_pedidos;
         }

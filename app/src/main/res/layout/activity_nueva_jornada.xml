@@ -12,7 +12,7 @@
         android:id="@+id/tvTituloJornada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registrar Jornada"
+        android:text="@string/registrar_jornada"
         android:layout_marginTop="40dp"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -25,7 +25,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Fecha (AAAA-MM-DD)"
+        android:hint="@string/fecha_aaaa_mm_dd"
         android:textColorHint="@color/text_primary"
         android:layout_marginTop="32dp"
         app:layout_constraintTop_toBottomOf="@id/tvTituloJornada">
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/text_primary"
-        android:hint="Número de Pedidos"
+        android:hint="@string/n_mero_de_pedidos"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/tilFecha">
 
@@ -59,7 +59,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Horas Trabajadas"
+        android:hint="@string/horas_trabajadas"
         android:textColorHint="@color/text_primary"
         android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/tilPedidos">
@@ -79,7 +79,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:backgroundTint="@color/scalc_primary"
-        android:text="Guardar Datos"
+        android:text="@string/guardar_jornada"
         android:textColor="@color/white"
         app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -90,7 +90,7 @@
         android:id="@+id/cbFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Modificar Fecha"
+        android:text="@string/modificar_fecha"
         android:layout_marginTop="16dp"
         android:textColor="@color/scalc_dark"
         app:layout_constraintTop_toBottomOf="@id/tilHoras"

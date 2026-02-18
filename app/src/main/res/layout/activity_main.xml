@@ -73,7 +73,7 @@
                         android:id="@+id/tvPedidos"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:text="PEDIDOS"
+                        android:text="@string/pedidos"
                         android:textColor="#CCFFFFFF"
                         android:textSize="12sp"
                         android:textStyle="bold"/>
@@ -96,7 +96,7 @@
                         android:id="@+id/tvHoras"
                         android:layout_height="wrap_content"
                         android:layout_width="wrap_content"
-                        android:text="HORAS"
+                        android:text="@string/horas"
                         android:textColor="#CCFFFFFF"
                         android:textSize="12sp"
                         android:textStyle="bold"/>
@@ -117,7 +117,7 @@
         android:id="@+id/btnNuevaJornada"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:text="+ Añadir Jornada"
+        android:text="@string/a_adir_jornada"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/white"
@@ -140,7 +140,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Historial"
+            android:text="@string/historial"
             android:layout_marginEnd="8dp"
 
             android:textColor="@color/text_primary"
@@ -154,7 +154,7 @@
             android:layout_width="0dp"
             android:layout_height="60dp"
             android:layout_weight="1"
-            android:text="Ajustes"
+            android:text="@string/ajustes"
             android:layout_marginStart="8dp"
 
             android:textColor="@color/text_primary"

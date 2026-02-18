@@ -1,18 +1,30 @@
 package com.example.scalc;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.scalc.SQL.AdminSQLiteOpenHelper;
+import com.google.android.material.textfield.TextInputLayout;
 
 public class ConfiguracionActivity extends AppCompatActivity {
 
     private Button btnGuardarConfig;
     private EditText etConfHora, etConfPedido, etConfNombre;
     private AdminSQLiteOpenHelper admin;
+    private String modalidad;
+    private RadioButton rbAmbos, rbSoloHora, rbSoloPedido;
+    private RadioGroup rgModalidad;
+    private TextInputLayout tilConfHora, tilConfPedido, tilConfNombre;
+    private CheckBox cbModalidad;
+
 
 
     @Override
@@ -25,11 +37,50 @@ public class ConfiguracionActivity extends AppCompatActivity {
         etConfHora = findViewById(R.id.etConfHora);
         etConfPedido = findViewById(R.id.etConfPedido);
         etConfNombre = findViewById(R.id.etConfNombre);
+        rbAmbos = findViewById(R.id.rbAmbos);
+        rbSoloHora = findViewById(R.id.rbSoloHora);
+        rbSoloPedido = findViewById(R.id.rbSoloPedido);
+        modalidad = admin.getDatosUsuario().getModalidad();
+        tilConfHora = findViewById(R.id.tilConfHora);
+        tilConfPedido = findViewById(R.id.tilConfPedido);
+        tilConfNombre = findViewById(R.id.tilConfNombre);
+        cbModalidad = findViewById(R.id.cbModalidad);
+        rgModalidad = findViewById(R.id.rgModalidad);
+
+        actualizarAccesibilidad(false);
+        cbModalidad.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            actualizarAccesibilidad(isChecked);
+        });
+
+        rbAmbos.setOnClickListener(v -> {
+            modalidad = "HoraPedido";
+            tilConfHora.setVisibility(View.VISIBLE);
+            tilConfPedido.setVisibility(View.VISIBLE);
+        });
+        rbSoloHora.setOnClickListener(v -> {
+            modalidad = "Hora";
+            tilConfHora.setVisibility(View.VISIBLE);
+            tilConfPedido.setVisibility(View.GONE);
+        });
+        rbSoloPedido.setOnClickListener(v -> {
+            modalidad = "Pedido";
+            tilConfPedido.setVisibility(View.VISIBLE);
+            tilConfHora.setVisibility(View.GONE);
+        });
+
 
         etConfHora.setText(String.valueOf(admin.getDatosUsuario().getTarifa_hora()));
         etConfPedido.setText(String.valueOf(admin.getDatosUsuario().getTarifa_pedido()));
         etConfNombre.setText(admin.getDatosUsuario().getNombre());
-
+        if(modalidad.equals("HoraPedido")){
+            rbAmbos.setChecked(true);
+        } else if(modalidad.equals("Hora")){
+            rbSoloHora.setChecked(true);
+            tilConfPedido.setVisibility(View.GONE);
+        } else if(modalidad.equals("Pedido")){
+            rbSoloPedido.setChecked(true);
+            tilConfHora.setVisibility(View.GONE);
+        }
 
         btnGuardarConfig.setOnClickListener(v -> {
             actualizaUsuario();
@@ -43,39 +94,34 @@ public class ConfiguracionActivity extends AppCompatActivity {
         String nombre = etConfNombre.getText().toString();
         String horaStr = etConfHora.getText().toString();
         String pedidoStr = etConfPedido.getText().toString();
+        String modalidad = this.modalidad;
 
-        admin.actualizarUser(nombre, Double.parseDouble(horaStr), Double.parseDouble(pedidoStr));
+        admin.actualizarUser(nombre, modalidad, Double.parseDouble(horaStr), Double.parseDouble(pedidoStr));
 
         finish();
     }
 
-    public void enviarReporte(android.view.View view) {
-        android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"soporte@scalc.com"});
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Fallo en la App");
-        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Hola, he encontrado un error...");
+    private void actualizarAccesibilidad(boolean habilitado) {
+        rgModalidad.setEnabled(habilitado);
+        rbAmbos.setEnabled(habilitado);
+        rbSoloHora.setEnabled(habilitado);
+        rbSoloPedido.setEnabled(habilitado);
 
-        try {
-            startActivity(android.content.Intent.createChooser(intent, "Enviar email..."));
-        } catch (Exception e) {
-            android.widget.Toast.makeText(this, "No tienes app de correo.", android.widget.Toast.LENGTH_SHORT).show();
-        }
-    }
+        tilConfHora.setEnabled(habilitado);
+        tilConfPedido.setEnabled(habilitado);
+        etConfHora.setEnabled(habilitado);
+        etConfPedido.setEnabled(habilitado);
+        etConfNombre.setEnabled(habilitado);
+        btnGuardarConfig.setEnabled(habilitado);
 
-    // REQUISITO 2: Bluetooth (Hardware)
-    @android.annotation.SuppressLint("MissingPermission")
-    public void probarBluetooth(android.view.View view) {
-        android.bluetooth.BluetoothAdapter bt = android.bluetooth.BluetoothAdapter.getDefaultAdapter();
+        float alfa = habilitado ? 1.0f : 0.5f;
+        rgModalidad.setAlpha(alfa);
+        tilConfHora.setAlpha(alfa);
+        tilConfPedido.setAlpha(alfa);
+        tilConfNombre.setAlpha(alfa);
 
-        if (bt == null) {
-            android.widget.Toast.makeText(this, "Este móvil no tiene Bluetooth", android.widget.Toast.LENGTH_SHORT).show();
-        } else if (!bt.isEnabled()) {
-            // Pide activar Bluetooth
-            startActivity(new android.content.Intent(android.bluetooth.BluetoothAdapter.ACTION_REQUEST_ENABLE));
-        } else {
-            // Simula la conexión
-            android.widget.Toast.makeText(this, "✅ Bluetooth activo. Buscando dispositivos...", android.widget.Toast.LENGTH_LONG).show();
-        }
+        int iconoRes = habilitado ? R.drawable.ic_lock_open : R.drawable.ic_lock;
+
+        cbModalidad.setCompoundDrawablesWithIntrinsicBounds(0, 0, iconoRes, 0);
     }
 }

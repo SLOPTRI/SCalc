@@ -16,9 +16,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://dl.cloudsmith.io/public/troysoft/jplot/maven/")
+        }
     }
 }
 
 rootProject.name = "SCalc"
 include(":app")
- 

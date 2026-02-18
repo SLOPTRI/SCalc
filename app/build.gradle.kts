@@ -4,9 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.scalc"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.scalc"
@@ -41,4 +39,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("com.gabrielopez.plot:jplot:1.7")
 }

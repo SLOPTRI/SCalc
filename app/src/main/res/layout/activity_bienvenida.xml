@@ -31,7 +31,7 @@
         android:id="@+id/tvTituloBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bienvenido a SCalc"
+        android:text="@string/bienvenido_a_scalc"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/scalc_primary"
@@ -44,7 +44,7 @@
         android:id="@+id/tvSubtituloBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configura tu perfil para empezar a controlar tus ganancias."
+        android:text="@string/configura_tu_perfil_para_empezar_a_controlar_tus_ganancias"
         android:textSize="14sp"
         android:textColor="@color/text_secondary"
         android:textAlignment="center"
@@ -64,7 +64,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tu Nombre"
+            android:hint="@string/tu_nombre"
             app:hintTextColor="@color/scalc_primary"
             android:textColorHint="@color/text_hint">
 
@@ -76,11 +76,62 @@
                 android:textColor="@color/text_primary"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Bonificacion por Hora (€)"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/modalidad_de_cobro"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:layout_marginBottom="8dp"/>
+
+            <RadioGroup
+                android:id="@+id/rgModalidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/rbAmbos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ambos"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/scalc_primary"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:id="@+id/rbSoloHora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/solo_hora"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/scalc_primary"
+                    android:layout_marginHorizontal="8dp" />
+
+                <RadioButton
+                    android:id="@+id/rbSoloPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/solo_pedido"
+                    android:textSize="12sp"
+                    android:buttonTint="@color/scalc_primary" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/tilPrecioHoraUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/bonificacion_por_hora"
             android:layout_marginTop="16dp"
             app:hintTextColor="@color/scalc_primary"
             android:textColorHint="@color/text_hint">
@@ -95,9 +146,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/tilPrecioPedidoUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Bonificacion por Pedido (€)"
+            android:hint="@string/bonificacion_por_pedido"
             android:layout_marginTop="16dp"
             app:hintTextColor="@color/scalc_primary"
             android:textColorHint="@color/text_hint">
@@ -116,7 +168,7 @@
         android:id="@+id/btnEmpezar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Comenzar a Trabajar"
+        android:text="@string/comenzar_a_trabajar"
         android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="@color/scalc_primary"

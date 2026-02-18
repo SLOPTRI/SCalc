@@ -11,7 +11,7 @@
         android:id="@+id/tvTituloConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configuración"
+        android:text="@string/configuraci_n"
         android:textSize="28sp"
         android:textStyle="bold"
         android:textColor="@color/scalc_primary"
@@ -23,7 +23,7 @@
         android:id="@+id/tvSubtituloConfig"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ajusta tus tarifas y preferencias"
+        android:text="@string/ajusta_tus_tarifas_y_preferencias"
         android:textSize="14sp"
         android:textColor="@color/text_secondary"
         android:layout_marginTop="4dp"
@@ -47,7 +47,7 @@
             android:padding="24dp">
 
             <TextView
-                android:text="Mi Usuario"
+                android:text="@string/mi_usuario"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
@@ -60,7 +60,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="@string/nombre"
                 app:boxStrokeColor="@color/scalc_primary"
                 app:hintTextColor="@color/scalc_primary"
                 android:textColorHint="@color/text_hint">
@@ -73,13 +73,63 @@
                     android:textColor="@color/text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/modalidad_de_cobro"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="8dp"/>
+
+                <RadioGroup
+                    android:id="@+id/rgModalidad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <RadioButton
+                        android:id="@+id/rbAmbos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ambos"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary"
+                        android:checked="true" />
+
+                    <RadioButton
+                        android:id="@+id/rbSoloHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/solo_hora"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary"
+                        android:layout_marginHorizontal="8dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbSoloPedido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/solo_pedido"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary" />
+                </RadioGroup>
+            </LinearLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilConfHora"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_marginTop="16dp"
                 android:layout_height="wrap_content"
-                android:hint="Bonificacion por Hora (€)"
+                android:hint="@string/bonificacion_por_hora"
                 app:boxStrokeColor="@color/scalc_primary"
                 app:hintTextColor="@color/scalc_primary"
                 android:textColorHint="@color/text_hint">
@@ -97,7 +147,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bonificacion por Pedido (€)"
+                android:hint="@string/bonificacion_por_pedido"
                 android:layout_marginTop="16dp"
                 app:boxStrokeColor="@color/scalc_primary"
                 app:hintTextColor="@color/scalc_primary"
@@ -110,41 +160,24 @@
                     android:inputType="numberDecimal"
                     android:textColor="@color/text_primary"/>
             </com.google.android.material.textfield.TextInputLayout>
+
+            <CheckBox
+                android:id="@+id/cbModalidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/activar_edicion"
+                android:drawableEnd="@drawable/ic_lock"
+                android:drawablePadding="10dp"
+                android:padding="12dp"
+                android:textSize="16sp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Reportar Error"
-        android:textSize="16sp"
-        android:textColor="@color/white"
-        app:cornerRadius="12dp"
-        android:textStyle="bold"
-        android:onClick="enviarReporte"
-        android:backgroundTint="@color/scalc_primary"
-        app:layout_constraintBottom_toTopOf="@id/probarImpresora"
-        android:layout_marginBottom="10dp"/>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/probarImpresora"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:textSize="16sp"
-        app:cornerRadius="12dp"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:text="Probar Impresora Bluetooth"
-        android:onClick="probarBluetooth"
-        app:layout_constraintBottom_toTopOf="@+id/btnGuardarConfig"
-        android:backgroundTint="@color/scalc_primary"
-        android:layout_marginBottom="10dp"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardarConfig"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Guardar Cambios"
+        android:text="@string/guardar_cambios"
         android:textSize="16sp"
         android:textStyle="bold"
         app:backgroundTint="@color/scalc_primary"

@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">SCalc</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
+    <string name="activar_edicion">Activar edición</string>
+    <string name="bonificacion_por_pedido">Bonificacion por Pedido (€)</string>
+    <string name="bonificacion_por_hora">Bonificacion por Hora (€)</string>
+    <string name="solo_pedido">Solo Pedido</string>
+    <string name="solo_hora">Solo Hora</string>
+    <string name="ambos">Ambos</string>
+    <string name="modalidad_de_cobro">Modalidad de cobro:</string>
+    <string name="nombre">Nombre</string>
+    <string name="mi_usuario">Mi Usuario</string>
+    <string name="ajusta_tus_tarifas_y_preferencias">Ajusta tus tarifas y preferencias</string>
+    <string name="configuraci_n">Configuración</string>
+    <string name="historial_de_meses">Historial de Meses</string>
+    <string name="consulta_tus_ingresos_anteriores">Consulta tus ingresos anteriores</string>
+    <string name="no_hay_registros_guardados_a_n">No hay registros guardados aún</string>
+    <string name="bienvenido_a_scalc">Bienvenido a SCalc</string>
+    <string name="configura_tu_perfil_para_empezar_a_controlar_tus_ganancias">Configura tu perfil para empezar a controlar tus ganancias.</string>
+    <string name="tu_nombre">Tu Nombre</string>
+    <string name="comenzar_a_trabajar">Comenzar a Trabajar</string>
+    <string name="detalle_de_jornadas">Detalle de Jornadas</string>
+    <string name="desglose_diario">Desglose diario</string>
+    <string name="pedidos">PEDIDOS</string>
+    <string name="horas">HORAS</string>
+    <string name="a_adir_jornada">+ Añadir Jornada</string>
+    <string name="historial">Historial</string>
+    <string name="ajustes">Ajustes</string>
+    <string name="guardar_jornada">Guardar Jornada</string>
+    <string name="modificar_fecha">Modificar Fecha</string>
+    <string name="horas_trabajadas">Horas Trabajadas</string>
+    <string name="n_mero_de_pedidos">Número de Pedidos</string>
+    <string name="registrar_jornada">Registrar Jornada</string>
+    <string name="fecha_aaaa_mm_dd">Fecha (AAAA-MM-DD)</string>
 </resources>

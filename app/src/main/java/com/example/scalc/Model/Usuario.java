@@ -4,12 +4,14 @@ public class Usuario {
 
     private int id;
     private String nombre;
+    private String modalidad;
     private double tarifa_hora;
     private double tarifa_pedido;
 
-    public Usuario(int id, String nombre, double tarifa_hora, double tarifa_pedido) {
+    public Usuario(int id, String nombre,String modalidad, double tarifa_hora, double tarifa_pedido) {
         this.id = id;
         this.nombre = nombre;
+        this.modalidad = modalidad;
         this.tarifa_hora = tarifa_hora;
         this.tarifa_pedido = tarifa_pedido;
     }
@@ -31,6 +33,14 @@ public class Usuario {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
     }
 
     public double getTarifa_hora() {

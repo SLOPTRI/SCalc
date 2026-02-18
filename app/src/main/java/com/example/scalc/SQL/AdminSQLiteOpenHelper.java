@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -21,7 +20,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     // 1. Nombre de la BD y su versión
     private static final String DATABASE_NAME = "scalc_database.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 11;
 
     // 2. Nombres de las Tablas
     public static final String TABLA_USUARIO = "usuario";
@@ -33,6 +32,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USUARIO + " (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "nombre TEXT, " +
+            "modalidad TEXT, " +
             "tarifa_hora REAL, " +
             "tarifa_pedido REAL)";
 
@@ -45,7 +45,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
             "total_pedidos INTEGER, " +
             "total_horas REAL, " +
             "salario_total REAL, " +
-            "estado TEXT, " +
+            "estado INTEGER CHECK (estado IN (0, 1)), " +
+            "tarifa_hora REAL," +
+            "tarifa_pedido REAL," +
+            "modalidad TEXT," +
             "FOREIGN KEY(id_usuario) REFERENCES " + TABLA_USUARIO + "(id))";
 
     // Tabla JORNADA
@@ -79,11 +82,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertarUser(String nombre, double tarifa_hora, double tarifa_pedido){
+    public void insertarUser(String nombre,String modalidad, double tarifa_hora, double tarifa_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("nombre", nombre);
+        values.put("modalidad", modalidad);
         values.put("tarifa_hora", tarifa_hora);
         values.put("tarifa_pedido", tarifa_pedido);
         db.insert(TABLA_USUARIO, null, values);
@@ -100,8 +104,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
             usuario = new Usuario(
                     cursor.getInt(0),
                     cursor.getString(1),
-                    cursor.getDouble(2),
-                    cursor.getDouble(3)
+                    cursor.getString(2),
+                    cursor.getDouble(3),
+                    cursor.getDouble(4)
             );
         }
 
@@ -110,11 +115,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
-    public void actualizarUser(String nombre, double tarifa_hora, double tarifa_pedido){
+    public void actualizarUser(String nombre, String modalidad, double tarifa_hora, double tarifa_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("nombre", nombre);
+        values.put("modalidad", modalidad);
         values.put("tarifa_hora", tarifa_hora);
         values.put("tarifa_pedido", tarifa_pedido);
 
@@ -144,6 +150,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         asignarHorasPedidosTicket(ticket);
     }
 
+    public void eliminarJornada(int id){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLA_JORNADA, "id = " + id, null);
+        db.close();
+    }
+
     public Ticket getTicketAnioMes(int anioBuscado, String mesBuscado){
         List<Ticket> tickets = getTickets();
 
@@ -170,7 +182,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
         Ticket ticket = new Ticket(0, mes, getDatosUsuario());
         ticket.setAnio(LocalDate.now().getYear());
-        ticket.setEstado("activo");
+        ticket.setEstado(1);
         ticket.setTotal_pedidos(0);
         ticket.setTotal_horas(0);
         ticket.setSalario_total(0);
@@ -178,10 +190,13 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         values.put("id_usuario", 1);
         values.put("anio", LocalDate.now().getYear());
         values.put("mes", mes);
-        values.put("estado", "activo");
+        values.put("estado", 1);
         values.put("salario_total", 0);
         values.put("total_horas", 0);
         values.put("total_pedidos", 0);
+        values.put("tarifa_hora", getDatosUsuario().getTarifa_hora());
+        values.put("tarifa_pedido", getDatosUsuario().getTarifa_pedido());
+        values.put("modalidad", getDatosUsuario().getModalidad());
 
 
         long id = db.insert(TABLA_TICKET, null, values);
@@ -199,13 +214,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
             do {
 
-                Log.d("cursorPosiciondd", String.valueOf(cursor.getPosition()));
                 Ticket newTicket = new Ticket(cursor.getInt(0), cursor.getString(2), getDatosUsuario());
                 newTicket.setAnio(cursor.getInt(3));
                 newTicket.setTotal_pedidos(cursor.getInt(4));
                 newTicket.setTotal_horas(cursor.getDouble(5));
                 newTicket.setSalario_total(cursor.getDouble(6));
-                newTicket.setEstado(cursor.getString(7));
+                newTicket.setEstado(cursor.getInt(7));
 
                 tickets.add(newTicket);
 
@@ -253,7 +267,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()){
             do{
-
                 Jornada newJornada = new Jornada(cursor.getInt(0), id, cursor.getString(2), cursor.getInt(3),
                         cursor.getDouble(4));
 
@@ -279,8 +292,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         ticket.setTotal_horas(totalHoras);
         ticket.setTotal_pedidos(totalPedidos);
         ticket.calcularSalarioTotal();
-
-        Usuario usr = getDatosUsuario();
 
         values.put("total_horas", ticket.getTotal_horas());
         values.put("total_pedidos", ticket.getTotal_pedidos());

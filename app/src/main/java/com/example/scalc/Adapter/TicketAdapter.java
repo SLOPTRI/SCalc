@@ -43,8 +43,12 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
         String titulo = ticket.getMes().toUpperCase() + " " + ticket.getAnio();
         holder.tvMes.setText(titulo);
 
-        // Estado (Primera letra mayúscula)
-        holder.tvEstado.setText(ticket.getEstado());
+        // Estado (0/1 se parsea a Cerrado/Activo)
+        if (ticket.getEstado() == 0) {
+            holder.tvEstado.setText("Cerrado");
+        } else {
+            holder.tvEstado.setText("Activo");
+        }
 
         // Formatear dinero 0000.00 €
         holder.tvDinero.setText(String.format(Locale.getDefault(), "%.2f €", ticket.getSalario_total()));
@@ -61,8 +65,7 @@ public class TicketAdapter extends RecyclerView.Adapter<TicketAdapter.TicketView
             Intent intent = new Intent(context, DetalleTicketActivity.class);
             intent.putExtra("ID_TICKET_SELECCIONADO", ticket.getId());
 
-            // 3. ¡Arrancamos!
-            context.startActivity(intent);
+                context.startActivity(intent);
         });
     }
 
