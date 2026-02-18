@@ -61,8 +61,8 @@
                 android:text="12 Pedidos"
                 android:gravity="center"
                 android:padding="8dp"
-                android:background="#1A2196F9"
-                android:textColor="#2196F3"
+                android:background="@color/blue_back"
+                android:textColor="@color/blue_text"
                 android:textStyle="bold"
                 android:layout_marginEnd="8dp"/>
 
@@ -74,8 +74,8 @@
                 android:text="4.5 h"
                 android:gravity="center"
                 android:padding="8dp"
-                android:background="#1AFF9800"
-                android:textColor="#FF9800"
+                android:background="@color/orange_back"
+                android:textColor="@color/orange_text"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp"/>
         </LinearLayout>

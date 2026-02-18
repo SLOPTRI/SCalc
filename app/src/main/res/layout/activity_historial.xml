@@ -33,14 +33,14 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistorial"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="650dp"
         android:layout_marginTop="16dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/tvSubtitulo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_ticket"/>
+
     <TextView
         android:id="@+id/tvEmptyState"
         android:layout_width="wrap_content"
@@ -53,5 +53,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEstadisticas"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="6dp"
+        android:text="Ver Estadísticas"
+        android:textStyle="bold"
+        app:icon="@android:drawable/ic_menu_sort_by_size"
+        app:backgroundTint="@color/scalc_primary"
+        android:textColor="@color/white"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

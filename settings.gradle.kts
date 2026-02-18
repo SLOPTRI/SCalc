@@ -17,7 +17,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven {
-            url = uri("https://dl.cloudsmith.io/public/troysoft/jplot/maven/")
+            url = uri("https://jitpack.io")
         }
     }
 }

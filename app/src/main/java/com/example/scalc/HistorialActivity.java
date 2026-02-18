@@ -1,6 +1,8 @@
 package com.example.scalc;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +20,7 @@ public class HistorialActivity extends AppCompatActivity {
     RecyclerView rvHistorial;
     AdminSQLiteOpenHelper admin;
     TicketAdapter adapter;
+    Button btnEstadisticas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,5 +40,16 @@ public class HistorialActivity extends AppCompatActivity {
         // 4. Crear y asignar adaptador
         adapter = new TicketAdapter(listaDeTickets);
         rvHistorial.setAdapter(adapter);
+
+        // 5. Configurar botón de estadísticas
+        btnEstadisticas = findViewById(R.id.btnEstadisticas);
+        btnEstadisticas.setOnClickListener(v -> {
+            abreEstadisticas();
+        });
+    }
+
+    public void abreEstadisticas() {
+        Intent intent = new Intent(HistorialActivity.this, EstadisticasActivity.class);
+        startActivity(intent);
     }
 }

@@ -207,7 +207,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public List<Ticket> getTickets() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TICKET + " WHERE id_usuario = 1", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TICKET + " WHERE id_usuario = 1 ORDER BY id ASC", null);
         List<Ticket> tickets = new ArrayList<>();
 
         if(cursor.moveToFirst()){
@@ -313,6 +313,55 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
             asignarHorasPedidosTicket(ticket);
         }
 
+    }
+
+    /**
+     * Devuelve una lista con los años distintos que existen en la tabla ticket.
+     * Ejemplo: [2024, 2025]
+     */
+    public List<String> obtenerAniosRegistrados() {
+        List<String> anios = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT anio FROM " + TABLA_TICKET + " ORDER BY anio DESC", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                anios.add(String.valueOf(cursor.getInt(0)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        if (anios.isEmpty()) {
+            anios.add(String.valueOf(java.time.LocalDate.now().getYear()));
+        }
+        return anios;
+    }
+
+    /**
+     * Devuelve solo los tickets del año especificado.
+     */
+    public List<Ticket> getTicketsPorAnio(String anio) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TICKET + " WHERE id_usuario = 1 AND anio = " + anio + " ORDER BY id ASC", null);
+        List<Ticket> tickets = new ArrayList<>();
+
+        if(cursor.moveToFirst()){
+
+            do {
+
+                Ticket newTicket = new Ticket(cursor.getInt(0), cursor.getString(2), getDatosUsuario());
+                newTicket.setAnio(cursor.getInt(3));
+                newTicket.setTotal_pedidos(cursor.getInt(4));
+                newTicket.setTotal_horas(cursor.getDouble(5));
+                newTicket.setSalario_total(cursor.getDouble(6));
+                newTicket.setEstado(cursor.getInt(7));
+
+                tickets.add(newTicket);
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return tickets;
     }
 
 }

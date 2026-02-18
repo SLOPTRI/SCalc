@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SCalc">
         <activity
+            android:name=".EstadisticasActivity"
+            android:exported="false" />
+        <activity
             android:name=".DetalleTicketActivity"
             android:exported="false" />
         <activity

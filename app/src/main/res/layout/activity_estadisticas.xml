@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/scalc_background"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/tvTituloEstadisticas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Análisis de Graficos"
+        android:layout_marginTop="40dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/scalc_primary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/tilSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="Seleccionar Gráfica"
+        app:hintTextColor="@color/scalc_primary"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloEstadisticas">
+
+        <AutoCompleteTextView
+            android:id="@+id/spinnerMetricas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/text_primary"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:cardBackgroundColor="@color/scalc_card_background"
+        app:layout_constraintTop_toBottomOf="@id/tilSelector"
+        app:layout_constraintBottom_toTopOf="@id/btnCerrarEst">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="12dp">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lineChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/barChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pieChart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCerrarEst"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Volver al Historial"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/scalc_primary"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

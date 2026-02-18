@@ -22,4 +22,9 @@
     <color name="text_hint">#AEBCB9</color>
 
     <color name="scalc_accent">#4DB6AC</color>
+
+    <color name="orange_text">#FF9800</color>
+    <color name="blue_text">#2196F3</color>
+    <color name="orange_back">#1AFF9800</color>
+    <color name="blue_back">#1A2196F9</color>
 </resources>

@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
@@ -74,17 +73,13 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardarJornada"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:backgroundTint="@color/scalc_primary"
         android:text="@string/guardar_jornada"
         android:textColor="@color/white"
         app:cornerRadius="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <CheckBox
         android:id="@+id/cbFecha"
