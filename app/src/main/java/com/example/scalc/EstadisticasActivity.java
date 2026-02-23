@@ -1,6 +1,7 @@
 package com.example.scalc;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -138,7 +139,22 @@ public class EstadisticasActivity extends AppCompatActivity {
         dataSet.setValueTextColor(getResources().getColor(R.color.text_primary));
         dataSet.setValueTextSize(10f);
 
-        dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        //dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        // 1. Activar relleno
+        dataSet.setDrawFilled(true);
+
+        // 2. Crear el degradado programáticamente usando el color de la línea
+        // El degradado va desde el 'color' (arriba) hacia 'Color.TRANSPARENT' (abajo)
+        GradientDrawable drawable = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[]{color, Color.TRANSPARENT}
+        );
+
+        // 3. Asignar el degradado
+        dataSet.setFillDrawable(drawable);
+
+        // Opcional: Ajustar la transparencia general del degradado (0 a 255)
+        dataSet.setFillAlpha(175);
 
         // 3. ASIGNAR DATOS AL CHART
         LineData lineData = new LineData(dataSet);
