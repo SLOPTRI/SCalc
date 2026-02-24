@@ -18,16 +18,17 @@ import java.util.List;
 
 public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
-    // 1. Nombre de la BD y su versión
+    // Nombre de la BD y su versión
     private static final String DATABASE_NAME = "scalc_database.db";
     private static final int DATABASE_VERSION = 11;
 
-    // 2. Nombres de las Tablas
+    // Nombres de las Tablas
     public static final String TABLA_USUARIO = "usuario";
     public static final String TABLA_TICKET = "ticket";
     public static final String TABLA_JORNADA = "jornada";
 
-    // 3. Sentencias SQL para CREAR las tablas
+    // Sentencias SQL para CREAR las tablas
+
     // Tabla USUARIO
     private static final String CREAR_TABLA_USUARIO = "CREATE TABLE " + TABLA_USUARIO + " (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -64,7 +65,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Este método se ejecuta UNA sola vez al instalar la app
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Ejecutamos las órdenes SQL
@@ -82,6 +82,13 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+    * Función que inserta un usuario en la DB.
+    * @param nombre: Nombre del usuario.
+    * @param modalidad: Modalidad del usuario.
+    * @param tarifa_hora: Tarifa por hora.
+    * @param tarifa_pedido: Tarifa por pedido.
+    */
     public void insertarUser(String nombre,String modalidad, double tarifa_hora, double tarifa_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -94,6 +101,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+    * Función que devuelve un usuario de la DB.
+    */
     public Usuario getDatosUsuario(){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_USUARIO, null);
@@ -115,6 +125,13 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
+    /**
+    * Función que actualiza un usuario de la DB.
+    * @param nombre: Nombre del usuario.
+    * @param modalidad: Modalidad del usuario.
+    * @param tarifa_hora: Tarifa por hora.
+    * @param tarifa_pedido: Tarifa por pedido.
+    */
     public void actualizarUser(String nombre, String modalidad, double tarifa_hora, double tarifa_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -128,6 +145,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+    * Función que inserta una jornada en la DB.
+    * @param fechaString: Fecha de la jornada.
+    * @param numeroPedidos: Número de pedidos.
+    * @param numeroHoras: Número de horas.
+    */
     public void insertarJornada(String fechaString,int numeroPedidos, double numeroHoras){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -150,12 +173,21 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         asignarHorasPedidosTicket(ticket);
     }
 
+    /**
+    * Función que elimina una jornada de la DB.
+    * @param id: ID de la jornada.
+    */
     public void eliminarJornada(int id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLA_JORNADA, "id = " + id, null);
         db.close();
     }
 
+    /**
+    * Función que devuelve un ticket de la DB según el año y mes.
+    * @param anioBuscado: Año del ticket.
+    * @param mesBuscado: Mes del ticket.
+    */
     public Ticket getTicketAnioMes(int anioBuscado, String mesBuscado){
         List<Ticket> tickets = getTickets();
 
@@ -173,6 +205,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return null;
     }
 
+    /**
+    * Función que inserta un ticket en la DB.
+    */
     public Ticket insertarTicket(){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -205,6 +240,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return ticket;
     }
 
+    /**
+    * Función que devuelve una lista con todos los tickets de la DB.
+    */
     public List<Ticket> getTickets() {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TICKET + " WHERE id_usuario = 1 ORDER BY id ASC", null);
@@ -229,6 +267,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return tickets;
     }
 
+    /**
+    * Función que devuelve el mes en español a partir de un número.
+    * @param n: Número del mes.
+    */
     public String selectorMes(int n){
         switch (n){
             case 1:
@@ -260,6 +302,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
+    /**
+    * Función que devuelve una lista con todas las jornadas de un ticket.
+    * @param id: ID del ticket.
+    */
     public List<Jornada> getJornadas(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_JORNADA + " WHERE id_ticket = " + id + " ORDER BY id DESC", null);
@@ -278,6 +324,10 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return jornadas;
     }
 
+    /**
+    * Función que actualiza el total de horas y pedidos de un ticket.
+    * @param ticket: Ticket a actualizar.
+    */
     public void asignarHorasPedidosTicket(Ticket ticket) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -316,7 +366,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve una lista con los años distintos que existen en la tabla ticket.
+     * Función que devuelve una lista con los años distintos que existen en la tabla ticket.
      * Ejemplo: [2024, 2025]
      */
     public List<String> obtenerAniosRegistrados() {
@@ -338,7 +388,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Devuelve solo los tickets del año especificado.
+     * Función que devuelve solo los tickets del año especificado.
+     * @param anio: Año de los tickets.
      */
     public List<Ticket> getTicketsPorAnio(String anio) {
         SQLiteDatabase db = this.getReadableDatabase();

@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // 1. Inicializamos DB y Vistas
+        // Inicializamos DB y Vistas
         admin = new AdminSQLiteOpenHelper(this);
 
         btnNuevaJornada = findViewById(R.id.btnNuevaJornada);
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         cardResumen = findViewById(R.id.cardResumen);
 
-        // 2. Configurar Botones
+        // Configurar Botones
         cardResumen.setOnClickListener(v -> abreTicketActual());
         btnNuevaJornada.setOnClickListener(v -> abreNuevaJornada());
         btnHistorial.setOnClickListener(v -> abreHistorial());
@@ -61,20 +61,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Método único para actualizar la UI con los datos de la BD.
+     * Función para actualizar la UI con los datos de la BD.
      */
     private void cargarDatosEnPantalla() {
-        // A. Cargar Usuario
+        // Cargar Usuario
         Usuario usuario = admin.getDatosUsuario();
         if (usuario != null) {
             tvSaludo.setText("Hola, " + usuario.getNombre());
         }
 
-        // B. Cargar Fecha Actual
+        // Cargar Fecha Actual
         String nombreMes = admin.selectorMes(LocalDate.now().getMonthValue());
         tvMesActual.setText(nombreMes + " " + LocalDate.now().getYear());
 
-        // C. Cargar Ticket Actual
+        // Cargar Ticket Actual
         Ticket ticketActual = admin.getTicketActual();
 
         if (ticketActual != null) {
@@ -92,21 +92,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    * Función para abrir HistorialActivity
+    */
     public void abreHistorial(){
         Intent intent  = new Intent(MainActivity.this, HistorialActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Función para abrir ConfiguraciónActivity
+     */
     public void abreConfiguracion(){
         Intent intent  = new Intent(MainActivity.this, ConfiguracionActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Función para abrir NuevaJornadaActivity
+     */
     public void abreNuevaJornada(){
         Intent intent  = new Intent(MainActivity.this, NuevaJornadaActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Función para abrir DetalleTicketActivity con el ticket actual
+     */
     public void abreTicketActual(){
         Intent intent  = new Intent(MainActivity.this, DetalleTicketActivity.class);
         Ticket ticketActual = admin.getTicketActual();

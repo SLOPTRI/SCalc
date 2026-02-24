@@ -17,9 +17,6 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -27,7 +24,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +42,7 @@ public class EstadisticasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estadisticas);
 
-        // 1. Inicializamos DB y Vistas
+        // Inicialización de la Base de Datos, Gráficas y Selector
         admin = new AdminSQLiteOpenHelper(this);
 
         lineChart = findViewById(R.id.lineChart);
@@ -56,7 +52,7 @@ public class EstadisticasActivity extends AppCompatActivity {
         spinnerMetricas = findViewById(R.id.spinnerMetricas);
         btnCerrarEst = findViewById(R.id.btnCerrarEst);
 
-        // 2. Configurar UI
+        // Configuracion de la UI
         configurarSelector();
 
         btnCerrarEst.setOnClickListener(v -> finish());
@@ -64,6 +60,9 @@ public class EstadisticasActivity extends AppCompatActivity {
         actualizarGrafica("Facturación");
     }
 
+    /**
+    * Función que configura el selector de métricas.
+    */
     private void configurarSelector() {
         String[] opciones = {"Facturación", "Pedidos", "Horas", "Pedidos por Hora"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_spinner, opciones);
@@ -75,6 +74,10 @@ public class EstadisticasActivity extends AppCompatActivity {
         });
     }
 
+    /**
+    * Función que actualiza la gráfica según la elección del usuario.
+    * @param metrica: Elección del usuario.
+    */
     private void actualizarGrafica(String metrica) {
         List<Ticket> tickets = admin.getTickets();
 
@@ -103,8 +106,14 @@ public class EstadisticasActivity extends AppCompatActivity {
         }
     }
 
+    /**
+    * Funtión que genera una gráfica lineal.
+    * @param tickets: Lista de tickets.
+    * @param tipo: Tipo de gráfica.
+    * @param color: Color de la gráfica.
+    */
     private void generarGraficaLineal(List<Ticket> tickets, String tipo, int color) {
-        // 1. PREPARACIÓN DE DATOS
+        // PREPARACIÓN DE DATOS
         ArrayList<Entry> entries = new ArrayList<>();
         final ArrayList<String> etiquetasMeses = new ArrayList<>();
 
@@ -112,11 +121,9 @@ public class EstadisticasActivity extends AppCompatActivity {
             Ticket t = tickets.get(i);
             float valor;
 
-            // Lógica para diferenciar Facturación de Pedidos por Hora
             if (tipo.equals("Facturación")) {
                 valor = (float) t.getSalario_total();
             } else {
-                // Validación para evitar división por cero
                 valor = t.getTotal_horas() > 0 ? (float)(t.getTotal_pedidos() / t.getTotal_horas()) : 0f;
             }
 
@@ -129,7 +136,7 @@ public class EstadisticasActivity extends AppCompatActivity {
             return;
         }
 
-        // 2. CONFIGURACIÓN DE LA LÍNEA (DataSet)
+        // CONFIGURACIÓN DE LA LÍNEA (DataSet)
         LineDataSet dataSet = new LineDataSet(entries, tipo);
         dataSet.setColor(color);
         dataSet.setCircleColor(color);
@@ -139,24 +146,20 @@ public class EstadisticasActivity extends AppCompatActivity {
         dataSet.setValueTextColor(getResources().getColor(R.color.text_primary));
         dataSet.setValueTextSize(10f);
 
-        //dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        // 1. Activar relleno
+        // Activar relleno
         dataSet.setDrawFilled(true);
 
-        // 2. Crear el degradado programáticamente usando el color de la línea
-        // El degradado va desde el 'color' (arriba) hacia 'Color.TRANSPARENT' (abajo)
+        // Crear el degradado programáticamente usando el color de la línea
         GradientDrawable drawable = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[]{color, Color.TRANSPARENT}
         );
 
-        // 3. Asignar el degradado
+        // Asignar el degradado
         dataSet.setFillDrawable(drawable);
-
-        // Opcional: Ajustar la transparencia general del degradado (0 a 255)
         dataSet.setFillAlpha(175);
 
-        // 3. ASIGNAR DATOS AL CHART
+        // ASIGNAR DATOS AL CHART
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
 
@@ -193,15 +196,20 @@ public class EstadisticasActivity extends AppCompatActivity {
         lineChart.getAxisRight().setEnabled(false);
 
         // --- GENERAL ---
-        lineChart.getDescription().setEnabled(false); // Quita el texto de descripción
-        lineChart.getLegend().setEnabled(false);      // Quita la leyenda de colores de abajo
-        lineChart.setExtraOffsets(10, 0, 10, 10);     // Márgenes extra para que no se corten los puntos
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getLegend().setEnabled(false);
+        lineChart.setExtraOffsets(10, 0, 10, 10);
 
-        // 5. REDIBUJAR
-        lineChart.animateX(1000); // Animación suave al aparecer
+        // REDIBUJAR
+        lineChart.animateX(1000);
         lineChart.invalidate();
     }
 
+    /**
+    * Función que genera una gráfica circular.
+    * @param tickets: Lista de tickets.
+    * @param esPedidos: Indica si son pedidos o horas.
+    */
     private void generarGraficaCircular(List<Ticket> tickets, boolean esPedidos) {
         ArrayList<PieEntry> entries = new ArrayList<>();
 
@@ -217,22 +225,22 @@ public class EstadisticasActivity extends AppCompatActivity {
         ArrayList<Integer> colores = new ArrayList<>();
 
         // Tonos oscuros y saturados (Base)
-        colores.add(Color.parseColor("#00695C")); // Teal Oscuro Profundo
-        colores.add(Color.parseColor("#00897B")); // Teal Medio
-        colores.add(Color.parseColor("#4DB6AC")); // Teal Claro
-        colores.add(Color.parseColor("#80CBC4")); // Teal Muy Claro
+        colores.add(Color.parseColor("#00695C"));
+        colores.add(Color.parseColor("#00897B"));
+        colores.add(Color.parseColor("#4DB6AC"));
+        colores.add(Color.parseColor("#80CBC4"));
 
         // Variaciones hacia el Verde (Frescura)
-        colores.add(Color.parseColor("#2E7D32")); // Verde Bosque
-        colores.add(Color.parseColor("#43A047")); // Verde Hoja
-        colores.add(Color.parseColor("#66BB6A")); // Verde Pastel
-        colores.add(Color.parseColor("#A5D6A7")); // Verde Agua
+        colores.add(Color.parseColor("#2E7D32"));
+        colores.add(Color.parseColor("#43A047"));
+        colores.add(Color.parseColor("#66BB6A"));
+        colores.add(Color.parseColor("#A5D6A7"));
 
         // Variaciones hacia el Azul (Profundidad)
-        colores.add(Color.parseColor("#006064")); // Cyan Oscuro
-        colores.add(Color.parseColor("#0097A7")); // Cyan Medio
-        colores.add(Color.parseColor("#4DD0E1")); // Cyan Claro
-        colores.add(Color.parseColor("#B2EBF2")); // Cyan Muy Claro
+        colores.add(Color.parseColor("#006064"));
+        colores.add(Color.parseColor("#0097A7"));
+        colores.add(Color.parseColor("#4DD0E1"));
+        colores.add(Color.parseColor("#B2EBF2"));
 
         dataSet.setColors(colores);
 

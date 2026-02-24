@@ -1,26 +1,17 @@
 package com.example.scalc;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 
 import com.example.scalc.SQL.AdminSQLiteOpenHelper;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class BienvenidaActivity extends AppCompatActivity {
 
@@ -39,6 +30,7 @@ public class BienvenidaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bienvenida);
 
+        // Inicialización de las vistas
         btnEmpezar = findViewById(R.id.btnEmpezar);
         etNombreUser = findViewById(R.id.etNombreUser);
         etPrecioHoraUser = findViewById(R.id.etPrecioHoraUser);
@@ -52,6 +44,8 @@ public class BienvenidaActivity extends AppCompatActivity {
         tilPrecioPedidoUser.setVisibility(View.GONE);
 
         modalidad = new boolean[]{false,false,false};
+
+        // Configuracion de las vistas
 
         btnEmpezar.setOnClickListener(v -> {
             registrarUsuarioAbreMain();
@@ -83,12 +77,18 @@ public class BienvenidaActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Función que abre la actividad principal.
+    * */
     public void abreMain(){
         Intent intent = new Intent(BienvenidaActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Función que registra un usuario en la DB y abre la actividad principal.
+     * */
     public void registrarUsuarioAbreMain(){
         admin = new AdminSQLiteOpenHelper(this);
 

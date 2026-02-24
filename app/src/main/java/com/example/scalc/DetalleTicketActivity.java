@@ -25,28 +25,28 @@ public class DetalleTicketActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_ticket);
 
-        // 1. Inicializar Vistas
+        // Inicialización de las vistas
         rvJornadas = findViewById(R.id.rvJornadas);
-
-        // Importante: Definir cómo se ordenan los elementos (Verticalmente)
         rvJornadas.setLayoutManager(new LinearLayoutManager(this));
 
-        // 2. Inicializar Base de Datos
+        //Inicialización de la Base de Datos
         admin = new AdminSQLiteOpenHelper(this);
 
-        // 3. RECIBIR EL ID DEL TICKET (Enviado desde el Historial)
+        // Recibir el ID del ticket (Enviado desde el Historial)
         int idTicketRecibido = getIntent().getIntExtra("ID_TICKET_SELECCIONADO", -1);
 
         if (idTicketRecibido != -1) {
-            // Si el ID es válido, cargamos los datos
             cargarJornadas(idTicketRecibido);
         } else {
-            // Si hubo un error y no llegó el ID, cerramos la pantalla
             Toast.makeText(this, "Error al cargar el ticket", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
 
+    /**
+    * Función que carga las jornadas de un ticket.
+    * @param idTicket: ID del ticket.
+    */
     private void cargarJornadas(int idTicket) {
         // A. Consultamos la lista de jornadas de este ticket
         List<Jornada> listaJornadas = admin.getJornadas(idTicket);

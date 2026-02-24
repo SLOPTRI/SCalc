@@ -25,29 +25,32 @@ public class HistorialActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historial); // Asegúrate que este es tu layout
+        setContentView(R.layout.activity_historial);
 
-        // 1. Inicializar vistas y DB
+        // Inicialización de las vistas y Base de Datos
         rvHistorial = findViewById(R.id.rvHistorial);
         admin = new AdminSQLiteOpenHelper(this);
 
-        // 2. Configurar RecyclerView
+        // Configuración del RecyclerView
         rvHistorial.setLayoutManager(new LinearLayoutManager(this));
 
-        // 3. Obtener datos
+        // Obtener datos
         List<Ticket> listaDeTickets = admin.getTickets();
 
-        // 4. Crear y asignar adaptador
+        // Crear y asignar adaptador
         adapter = new TicketAdapter(listaDeTickets);
         rvHistorial.setAdapter(adapter);
 
-        // 5. Configurar botón de estadísticas
+        // Configurar botón de estadísticas
         btnEstadisticas = findViewById(R.id.btnEstadisticas);
         btnEstadisticas.setOnClickListener(v -> {
             abreEstadisticas();
         });
     }
 
+    /**
+    * Función que abre la actividad de estadísticas.
+    */
     public void abreEstadisticas() {
         Intent intent = new Intent(HistorialActivity.this, EstadisticasActivity.class);
         startActivity(intent);

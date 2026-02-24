@@ -1,6 +1,5 @@
 package com.example.scalc;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +32,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuracion);
         admin = new AdminSQLiteOpenHelper(this);
 
+        // Inicialización de las vistas
         btnGuardarConfig = findViewById(R.id.btnGuardarConfig);
         etConfHora = findViewById(R.id.etConfHora);
         etConfPedido = findViewById(R.id.etConfPedido);
@@ -40,13 +40,16 @@ public class ConfiguracionActivity extends AppCompatActivity {
         rbAmbos = findViewById(R.id.rbAmbos);
         rbSoloHora = findViewById(R.id.rbSoloHora);
         rbSoloPedido = findViewById(R.id.rbSoloPedido);
-        modalidad = admin.getDatosUsuario().getModalidad();
         tilConfHora = findViewById(R.id.tilConfHora);
         tilConfPedido = findViewById(R.id.tilConfPedido);
         tilConfNombre = findViewById(R.id.tilConfNombre);
         cbModalidad = findViewById(R.id.cbModalidad);
         rgModalidad = findViewById(R.id.rgModalidad);
 
+        // Modalidad actual del usuario.
+        modalidad = admin.getDatosUsuario().getModalidad();
+
+        // Configuracion de las vistas.
         actualizarAccesibilidad(false);
         cbModalidad.setOnCheckedChangeListener((buttonView, isChecked) -> {
             actualizarAccesibilidad(isChecked);
@@ -87,7 +90,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+    * Función que actualiza un usuario en la DB.
+    */
     public void actualizaUsuario(){
         admin = new AdminSQLiteOpenHelper(this);
 
@@ -101,6 +106,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Función que actualiza la accesibilidad de las vistas.
+     * @param habilitado: Booleano que indica si se debe habilitar o no.
+     */
     private void actualizarAccesibilidad(boolean habilitado) {
         rgModalidad.setEnabled(habilitado);
         rbAmbos.setEnabled(habilitado);
