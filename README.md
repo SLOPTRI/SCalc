@@ -1,106 +1,111 @@
-# 🛵 SCalc - Salary Calculator for Delivery Drivers
+# 🛵 SCalc - Salary & Logistics Calculator
 
-![Project Status](https://img.shields.io/badge/Status-En_Desarrollo-yellow)
+![Project Status](https://img.shields.io/badge/Status-In_Development-yellow)
 ![Language](https://img.shields.io/badge/Language-Java-orange)
 ![Platform](https://img.shields.io/badge/Platform-Android-green)
 ![Database](https://img.shields.io/badge/Database-SQLite-blue)
 
-**SCalc** es una aplicación móvil nativa diseñada para solucionar la problemática de gestión financiera de los repartidores de comida a domicilio ("Riders"). Permite un control exhaustivo de ingresos, horas trabajadas y pedidos realizados, automatizando cálculos que tradicionalmente se realizan de forma manual e ineficiente.
+**SCalc** is a native Android application engineered to address the financial management challenges faced by delivery riders ("Riders"). It provides a comprehensive tracking system for earnings, hours worked, and delivery metrics, automating calculations that are typically prone to manual errors and inefficiencies.
 
-Este proyecto forma parte del Trabajo de Fin de Grado (TFG) para el ciclo de **Desarrollo de Aplicaciones Multiplataforma (2º DAM)**.
-
----
-
-## 📋 Tabla de Contenidos
-- [Problema y Solución](#-problema-y-solución)
-- [Características Principales](#-características-principales)
-- [Arquitectura de Datos](#-arquitectura-de-datos)
-- [Tecnologías Utilizadas](#-tecnologías-utilizadas)
-- [Instalación y Uso](#-instalación-y-uso)
-- [Autor](#-autor)
+This project was developed as my **Final Degree Project** for the Multiplatform Application Development degree.
 
 ---
 
-## 🧐 Problema y Solución
-
-### El Problema
-Los repartidores a menudo cobran bajo modelos variables (pago por hora + pago por pedido) y carecen de herramientas específicas para registrar su actividad. El uso de hojas de cálculo genéricas o notas manuales resulta propenso a errores y dificulta conocer el salario real o comparar la productividad entre meses.
-
-### La Solución: SCalc
-Una aplicación Android que centraliza la gestión laboral del *rider*. El usuario introduce sus tarifas personalizadas y registra diariamente su actividad. La app procesa estos datos para ofrecer:
-* Cálculo automático del salario mensual.
-* Estadísticas de rendimiento (pedidos/hora).
-* Histórico de "Tickets" mensuales cerrados.
+## 📋 Table of Contents
+- [The Problem & Solution](#-the-problem--solution)
+- [Key Features](#-key-features)
+- [Data Architecture](#-data-architecture)
+- [Tech Stack](#-tech-stack)
+- [Installation](#-installation)
+- [Author](#-author)
 
 ---
 
-## 🚀 Características Principales
+## 🧐 The Problem & Solution
 
-* **Gestión de Tarifas Personalizable:** El usuario define sus bonificaciones (Precio por Hora y Precio por Pedido) en su perfil.
-* **Registro de Jornadas:** Interfaz rápida para ingresar horas y pedidos al finalizar el turno.
-* **Cálculo en Tiempo Real:** Algoritmo interno que combina las tarifas vigentes con la actividad diaria.
-* **Historial Mensual (Tickets):** Organización automática de jornadas en "Tickets" mensuales que congelan el salario calculado para mantener la integridad histórica.
-* **Funcionamiento Offline:** Persistencia de datos local mediante SQLite, garantizando privacidad y acceso sin conexión a internet.
-* **Análisis de Rendimiento:** Visualización de la media de pedidos por hora para evaluar la productividad.
+### The Challenge
+Delivery drivers often operate under variable payment models (pay-per-hour + pay-per-order) and lack specialized tools to track their activity. Relying on generic spreadsheets or manual notes often leads to calculation errors and hinders the ability to compare productivity or net income over time.
 
----
-
-## 🗂 Arquitectura de Datos
-
-El núcleo de la aplicación se basa en una base de datos relacional robusta que garantiza la integridad de los datos históricos frente a cambios en las tarifas del usuario.
-
-### Diagrama Entidad-Relación (ER)
-> *El sistema se estructura en tres entidades principales: Usuario (Configuración), Ticket (Contenedor mensual) y Jornada (Detalle diario).*
-
-![Diagrama ER de SCalc](docs/images/diagrama_er_scalc_hd.png)
-
-### Estructura Lógica
-1.  **USUARIO:** Almacena la configuración global y las tarifas actuales.
-2.  **TICKET:** Representa el mes trabajado. Almacena los totales calculados (`Salario_Total`, `Total_Pedidos`) actuando como una "factura" cerrada.
-3.  **JORNADA:** Registra la actividad unitaria de cada día, vinculada a un ticket específico.
+### The Solution: SCalc
+A native Android application that centralizes the rider's professional activity. By defining custom pay rates, users can input their daily activity, and SCalc handles the logic to provide:
+* **Automated monthly salary calculation.**
+* **Performance metrics (orders/hour).**
+* **Historical "Ticket" management** (monthly salary closures).
 
 ---
 
-## 🛠 Tecnologías Utilizadas
+## 🚀 Key Features
 
-### Entorno de Desarrollo
+* **Customizable Pay Rates:** Define your specific bonus structure (Hourly Rate & Per-Order Rate) in your profile.
+* **Daily Activity Logging:** Streamlined interface for rapid input of hours and orders at the end of a shift.
+* **Real-Time Calculation:** An internal logic engine that combines active rates with daily activity data.
+* **Monthly "Tickets":** Automatic grouping of shifts into monthly cycles, freezing calculated earnings to maintain historical data integrity.
+* **Offline-First:** Full data persistence using **SQLite**, ensuring privacy and accessibility without an internet connection.
+* **Performance Analysis:** Visual tracking of orders-per-hour to evaluate and optimize productivity.
+
+---
+
+## 🗂 Data Architecture
+
+The core of the app relies on a robust relational database designed to ensure data integrity even when user rates change over time.
+
+### Entity-Relationship Structure
+> *The system is built around three main entities: User (Configuration), Ticket (Monthly Container), and Shift (Daily Activity).*
+
+![SCalc ER Diagram](docs/images/diagrama_er_scalc_hd.png)
+
+### Logical Structure
+1. **USER:** Stores global configuration and active pay rates.
+2. **TICKET:** Represents a working month. Stores frozen calculations (`Total_Salary`, `Total_Orders`), acting as a sealed "invoice."
+3. **SHIFT:** Records unit activity for each day, linked to a specific Ticket.
+
+---
+
+## 🛠 Tech Stack
+
+### Development Environment
 * **IDE:** Android Studio
-* **Lenguaje:** Java (JDK 21)
-* **Control de Versiones:** Git & GitHub
+* **Language:** Java (JDK 21)
+* **Version Control:** Git & GitHub
 
+### Backend & Persistence
+* **Local Database:** SQLite (via `SQLiteOpenHelper`)
+* **Data Pattern:** Custom POJOs and DAO pattern for abstraction.
 
-### Backend & Persistencia
-* **Base de Datos Local:** SQLite (mediante `SQLiteOpenHelper`)
-* **Diseño de Modelo:** POJOs personalizados y patrón DAO.
-
-### Diseño UI/UX
-* **Herramientas:** Figma / Canva
-* **Componentes:** XML Layouts, Material Design Components.
-
----
-
-## 📲 Instalación y Uso
-Para probar este proyecto en local:
-
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone [https://github.com/SLOPTRI/SCalc.git](https://github.com/SLOPTRI/SCalc.git)
-    ```
-2.  **Abrir en Android Studio:**
-    * Selecciona `File` > `Open` y busca la carpeta clonada.
-    * Espera a que Gradle sincronice las dependencias.
-3.  **Ejecutar:**
-    * Conecta un dispositivo físico (Depuración USB activa) o usa un Emulador (Recomendado: Pixel 7 API 33+).
-    * Presiona el botón `Run` (▶).
+### UI/UX
+* **Design Tools:** Figma
+* **Components:** XML Layouts, Material Design Components.
 
 ---
 
-## 👤 Autor
+## 📦 Installation
 
+To run this project locally:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/SLOPTRI/SCalc.git
+   ```
+2. **Open in Android Studio:**
+   - Select `File` > `Open` and navigate to the cloned folder.
+   - Wait for Gradle to sync all dependencies.
+3. **Run:**
+   - Connect a physical device (with USB Debugging enabled) or use an Emulator (Pixel 7 API 33+ recommended).
+   - Click the **Run** (▶) button.
+
+---
+
+## 🚀 Roadmap & Future Evolution
+This project is currently the bridge between my degree and my upcoming evolution. Next steps include:
+* **Flutter Porting:** Migrating the core logic to Flutter/Dart for cross-platform support (iOS/Web).
+  
+---
+
+## 👤 Author
 
 **Salvador López Trigueros**
-* **Estudios:** Desarrollo de Aplicaciones Multiplataforma (2º DAM)
-* **Contacto:** [www.linkedin.com/in/salvador-lópez-trigueros-dev]
+* **Field:** Multiplatform Software Developer
+* **[LinkedIn](https://www.linkedin.com/in/salvador-l%C3%B3pez-trigueros-7439781b5/)**
 
 ---
-*Este proyecto es de carácter académico y está sujeto a derechos de autor del creador.*
+*This is an academic project subject to copyright.*
