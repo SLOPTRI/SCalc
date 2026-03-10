@@ -1,180 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/scalc_background"
-    android:padding="24dp">
+    android:fillViewport="true"
+    android:background="@color/scalc_background">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardLogoContainer"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="30dp"
-        android:layout_marginTop="40dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/logo" />
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/tvTituloBienvenida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/bienvenido_a_scalc"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/scalc_primary"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/cardLogoContainer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <TextView
-        android:id="@+id/tvSubtituloBienvenida"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/configura_tu_perfil_para_empezar_a_controlar_tus_ganancias"
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:textAlignment="center"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTituloBienvenida"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="40dp"
-        app:layout_constraintTop_toBottomOf="@id/tvSubtituloBienvenida">
+        android:padding="24dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/tu_nombre"
-            app:hintTextColor="@color/scalc_primary"
-            android:textColorHint="@color/text_hint">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardLogoContainer"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="30dp"
+            android:layout_marginTop="40dp"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etNombreUser"
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:textColor="@color/text_primary"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tvTituloBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bienvenido_a_scalc"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/scalc_primary"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/cardLogoContainer"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tvSubtituloBienvenida"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/configura_tu_perfil_para_empezar_a_controlar_tus_ganancias"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:textAlignment="center"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloBienvenida"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <LinearLayout
+            android:id="@+id/inputsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="16dp"
-            android:gravity="center">
+            android:layout_marginTop="40dp"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtituloBienvenida">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/modalidad_de_cobro"
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginBottom="8dp"/>
-
-            <RadioGroup
-                android:id="@+id/rgModalidad"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:hint="@string/tu_nombre"
+                app:hintTextColor="@color/scalc_primary"
+                android:textColorHint="@color/text_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNombreUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="@color/text_primary"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
                 android:gravity="center">
 
-                <RadioButton
-                    android:id="@+id/rbAmbos"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ambos"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/scalc_primary"
-                    android:checked="true" />
+                    android:text="@string/modalidad_de_cobro"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginBottom="8dp"/>
 
-                <RadioButton
-                    android:id="@+id/rbSoloHora"
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/rgModalidad"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/solo_hora"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/scalc_primary"
-                    android:layout_marginHorizontal="8dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                <RadioButton
-                    android:id="@+id/rbSoloPedido"
-                    android:layout_width="wrap_content"
+                    <RadioButton
+                        android:id="@+id/rbAmbos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ambos"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary"
+                        android:checked="true" />
+
+                    <RadioButton
+                        android:id="@+id/rbSoloHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/solo_hora"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary"
+                        android:layout_marginHorizontal="8dp" />
+
+                    <RadioButton
+                        android:id="@+id/rbSoloPedido"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/solo_pedido"
+                        android:textSize="12sp"
+                        android:buttonTint="@color/scalc_primary" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/tilPrecioHoraUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bonificacion_por_hora"
+                android:layout_marginTop="16dp"
+                app:hintTextColor="@color/scalc_primary"
+                android:textColorHint="@color/text_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPrecioHoraUser"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/solo_pedido"
-                    android:textSize="12sp"
-                    android:buttonTint="@color/scalc_primary" />
-            </RadioGroup>
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_primary"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/tilPrecioPedidoUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/bonificacion_por_pedido"
+                android:layout_marginTop="16dp"
+                app:hintTextColor="@color/scalc_primary"
+                android:textColorHint="@color/text_hint">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPrecioPedidoUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/text_primary"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/tilPrecioHoraUser"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEmpezar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/bonificacion_por_hora"
-            android:layout_marginTop="16dp"
-            app:hintTextColor="@color/scalc_primary"
-            android:textColorHint="@color/text_hint">
+            android:layout_height="60dp"
+            android:text="@string/comenzar_a_trabajar"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/scalc_primary"
+            android:textColor="@color/white"
+            app:cornerRadius="12dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintTop_toBottomOf="@id/inputsLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPrecioHoraUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:textColor="@color/text_primary"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/tilPrecioPedidoUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/bonificacion_por_pedido"
-            android:layout_marginTop="16dp"
-            app:hintTextColor="@color/scalc_primary"
-            android:textColorHint="@color/text_hint">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPrecioPedidoUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:textColor="@color/text_primary"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnEmpezar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="@string/comenzar_a_trabajar"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/scalc_primary"
-        android:textColor="@color/white"
-        app:cornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="24dp"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

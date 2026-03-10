@@ -19,9 +19,18 @@ public class JornadaAdapter extends RecyclerView.Adapter<JornadaAdapter.JornadaV
     private List<Jornada> listaJornadas;
     private Usuario usuario;
 
-    public JornadaAdapter(List<Jornada> listaJornadas, Usuario usuario) {
+    // 1. Declaramos la interfaz para escuchar el "mantener pulsado"
+    private OnJornadaLongClickListener listener;
+
+    public interface OnJornadaLongClickListener {
+        void onJornadaLongClick(Jornada jornada, int position);
+    }
+
+    // 2. Actualizamos el constructor para que pida el listener
+    public JornadaAdapter(List<Jornada> listaJornadas, Usuario usuario, OnJornadaLongClickListener listener) {
         this.listaJornadas = listaJornadas;
         this.usuario = usuario;
+        this.listener = listener;
     }
 
     @NonNull
@@ -43,6 +52,18 @@ public class JornadaAdapter extends RecyclerView.Adapter<JornadaAdapter.JornadaV
                 + (jornada.getCant_pedidos() * usuario.getTarifa_pedido());
 
         holder.tvDinero.setText(String.format(Locale.getDefault(), "%.2f €", dineroDia));
+
+        // 3. Añadimos el evento de mantener pulsado sobre la tarjeta
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (listener != null) {
+                    // Usamos getAdapterPosition() para mayor seguridad si la lista cambia rápido
+                    listener.onJornadaLongClick(jornada, holder.getAdapterPosition());
+                }
+                return true; // Importante: true significa que hemos consumido el evento
+            }
+        });
     }
 
     @Override
@@ -58,7 +79,7 @@ public class JornadaAdapter extends RecyclerView.Adapter<JornadaAdapter.JornadaV
             tvFecha = itemView.findViewById(R.id.tvJornadaFecha);
             tvPedidos = itemView.findViewById(R.id.tvJornadaPedidos);
             tvHoras = itemView.findViewById(R.id.tvJornadaHoras);
-            tvDinero = itemView.findViewById(R.id.tvJornadaDinero); // ¡Nuevo ID!
+            tvDinero = itemView.findViewById(R.id.tvJornadaDinero);
         }
     }
 }

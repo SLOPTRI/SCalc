@@ -100,10 +100,10 @@ public class BienvenidaActivity extends AppCompatActivity {
         if(nombreUser.isEmpty()){
             etNombreUser.setError("El nombre es obligatorio");
             etNombreUser.requestFocus();
-        } else if(precioHoraUser.isEmpty() && modalidad[1]){
+        } else if(precioHoraUser.isEmpty() || modalidad[1]){
             etPrecioHoraUser.setError("El precio por hora es necesario");
             etPrecioHoraUser.requestFocus();
-        } else if(precioPedidoUser.isEmpty() && modalidad[2]){
+        } else if(precioPedidoUser.isEmpty() || modalidad[2]){
             etPrecioPedidoUser.setError("El precio por pedido es necesario");
             etPrecioPedidoUser.requestFocus();
         } else{

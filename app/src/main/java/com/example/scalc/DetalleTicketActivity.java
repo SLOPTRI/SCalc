@@ -58,7 +58,12 @@ public class DetalleTicketActivity extends AppCompatActivity {
         if (listaJornadas != null && !listaJornadas.isEmpty() && miUsuario != null) {
 
             // D. Creamos el adaptador pasando LISTA + USUARIO
-            adapter = new JornadaAdapter(listaJornadas, miUsuario);
+            adapter = new JornadaAdapter(listaJornadas, miUsuario, new JornadaAdapter.OnJornadaLongClickListener() {
+                @Override
+                public void onJornadaLongClick(Jornada jornada, int position) {
+                    mostrarDialogoEliminar(jornada, position, listaJornadas);
+                }
+            });
 
             // E. Asignamos el adaptador al RecyclerView
             rvJornadas.setAdapter(adapter);
@@ -66,5 +71,43 @@ public class DetalleTicketActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No hay jornadas registradas en este ticket", Toast.LENGTH_LONG).show();
         }
+    }
+
+    /**
+     * Muestra un diálogo de confirmación y gestiona el borrado de la base de datos y la lista.
+     * @param jornada La jornada que el usuario ha dejado pulsada.
+     * @param position La posición de esa jornada en la lista del RecyclerView.
+     * @param listaJornadas La lista actual de jornadas que se está mostrando.
+     */
+    private void mostrarDialogoEliminar(Jornada jornada, int position, List<Jornada> listaJornadas) {
+
+        // 1. Mostrar el cuadro de alerta
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(this)
+                .setTitle("Eliminar Jornada")
+                .setMessage("¿Estás seguro de que deseas eliminar la jornada del " + jornada.getFecha() + "?")
+                .setPositiveButton("Eliminar", (dialog, which) -> {
+
+                    // 2. Ejecutar tu consulta en la Base de Datos
+                    // IMPORTANTE: Cambia "borrarJornadaPorId" por el nombre real de tu método en AdminSQLiteOpenHelper
+                    boolean exito = admin.eliminarJornada(jornada.getId());
+
+                    if (exito) {
+                        // 3. Borrar de la lista temporal de la Actividad
+                        listaJornadas.remove(position);
+
+                        // 4. Avisar al adaptador de que se ha borrado un elemento con animación
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position, listaJornadas.size());
+
+                        Toast.makeText(this, "Jornada eliminada", Toast.LENGTH_SHORT).show();
+
+                        // Extra TFG: Si al borrar una jornada necesitas recalcular los totales del ticket
+                        // puedes llamar a tu método aquí: admin.recalcularTotalesTicket(jornada.getId_ticket());
+                    } else {
+                        Toast.makeText(this, "Error al borrar la jornada", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
     }
 }

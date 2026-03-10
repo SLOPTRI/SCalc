@@ -177,10 +177,15 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     * Función que elimina una jornada de la DB.
     * @param id: ID de la jornada.
     */
-    public void eliminarJornada(int id){
+    public boolean eliminarJornada(int id){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLA_JORNADA, "id = " + id, null);
-        db.close();
+        if(db.delete(TABLA_JORNADA, "id = " + id, null) > 0){
+            db.close();
+            return true;
+        }else{
+            db.close();
+            return false;
+        }
     }
 
     /**
