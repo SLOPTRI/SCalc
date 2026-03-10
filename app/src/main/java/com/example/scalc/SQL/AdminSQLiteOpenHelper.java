@@ -390,6 +390,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     /**
      * Función que devuelve solo los tickets del año especificado.
      * @param anio: Año de los tickets.
+     *
+     * No implementada por cambio en el manejo de vistas
      */
     public List<Ticket> getTicketsPorAnio(String anio) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -415,4 +417,25 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         return tickets;
     }
 
+    /**
+     * Función que devuelve los anios registrados en la base de datos
+     *
+     * No implementada por cambio de manejo de vistas
+     */
+    public List<String> getAniosRegistrados(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT DISTINCT anio FROM " + TABLA_TICKET + " ORDER BY anio DESC", null);
+        List<String> anios = new ArrayList<>();
+
+        for(int i = 0; i < cursor.getCount(); i++){
+            cursor.moveToPosition(i);
+            anios.add(String.valueOf(cursor.getInt(0)));
+        }
+        cursor.close();
+
+        if(anios.isEmpty()){
+            anios.add(String.valueOf(java.time.LocalDate.now().getYear()));
+        }
+        return anios;
+    }
 }
