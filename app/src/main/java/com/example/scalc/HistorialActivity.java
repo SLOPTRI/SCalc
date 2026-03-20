@@ -20,7 +20,7 @@ public class HistorialActivity extends AppCompatActivity {
     RecyclerView rvHistorial;
     AdminSQLiteOpenHelper admin;
     TicketAdapter adapter;
-    Button btnEstadisticas;
+    Button btnEstadisticas, btnAyuda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +45,11 @@ public class HistorialActivity extends AppCompatActivity {
         btnEstadisticas = findViewById(R.id.btnEstadisticas);
         btnEstadisticas.setOnClickListener(v -> {
             abreEstadisticas();
+        });
+
+        btnAyuda = findViewById(R.id.btnAyuda);
+        btnAyuda.setOnClickListener(v -> {
+            GestorAyuda.mostrarAyuda(this, R.string.ayuda_titulo_historial, R.string.ayuda_mensaje_historial);
         });
     }
 

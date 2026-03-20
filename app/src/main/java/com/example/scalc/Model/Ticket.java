@@ -26,11 +26,13 @@ public class Ticket {
         this.total_pedidos = 0;
         this.total_horas = 0;
         this.salario_total = 0;
-        this.estado = 1;
+        this.estado = estado;
         this.tarifa_hora = usuario.getTarifa_hora();
         this.tarifa_pedido = usuario.getTarifa_pedido();
         this.modalidad = usuario.getModalidad();
     }
+
+    public Ticket(){}
 
     // Getters y Setters
 
@@ -126,11 +128,9 @@ public class Ticket {
 
     // Se asigna el salario solo si el ticket esta activo, de lo contrario no se modifica.
     public void calcularSalarioTotal() {
-        if(this.estado == 1){
-            double salario_horas = this.total_horas * this.tarifa_hora;
-            double salario_pedidos = this.total_pedidos * this.tarifa_pedido;
+        double salario_horas = this.total_horas * this.tarifa_hora;
+        double salario_pedidos = this.total_pedidos * this.tarifa_pedido;
 
-            this.salario_total = salario_horas + salario_pedidos;
-        }
+        this.salario_total = salario_horas + salario_pedidos;
     }
 }

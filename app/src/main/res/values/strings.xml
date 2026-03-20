@@ -32,4 +32,8 @@
     <string name="n_mero_de_pedidos">Número de Pedidos</string>
     <string name="registrar_jornada">Registrar Jornada</string>
     <string name="fecha_aaaa_mm_dd">Fecha (AAAA-MM-DD)</string>
+    <string name="ayuda_titulo_historial">Ayuda: Historial</string>
+    <string name="ayuda_mensaje_historial">En esta pantalla puedes consultar todos los tickets generados. \n\n💡 Tip: Si mantienes pulsada una jornada, podrás eliminarla permanentemente de la base de datos.</string>
+    <string name="ayuda_titulo_ajustes">Ayuda: Ajustes</string>
+    <string name="ayuda_mensaje_ajustes">Aquí puedes cambiar tu tarifa y modalidad. Ten en cuenta que los cambios se aplicarán solo a los nuevos tickets que generes a partir de ahora.</string>
 </resources>

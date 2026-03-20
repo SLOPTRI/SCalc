@@ -30,16 +30,28 @@
         app:layout_constraintTop_toBottomOf="@id/tvTituloHistorial"
         app:layout_constraintStart_toStartOf="parent"/>
 
+    <Button
+        android:id="@+id/btnAyuda"
+        android:layout_width="55dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toTopOf="@id/rvHistorial"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="x"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHistorial"
         android:layout_width="match_parent"
-        android:layout_height="650dp"
+        android:layout_height="500dp"
         android:layout_marginTop="16dp"
         android:scrollbars="vertical"
         app:layout_constraintTop_toBottomOf="@id/tvSubtitulo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_ticket"/>
+
 
     <TextView
         android:id="@+id/tvEmptyState"

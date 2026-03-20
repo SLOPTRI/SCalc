@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -151,16 +152,24 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     * @param numeroPedidos: Número de pedidos.
     * @param numeroHoras: Número de horas.
     */
-    public void insertarJornada(String fechaString,int numeroPedidos, double numeroHoras){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+    public void insertarJornada(String fechaString, int numeroPedidos, double numeroHoras){
+        // 1. Calcular fechas sin abrir la DB aún
+        String[] fecha = fechaString.split("-");
+        int anio = Integer.parseInt(fecha[0]);
+        int mes = Integer.parseInt(fecha[1].substring(0, 2));
 
-        // Obtener ticket actual
-        Ticket ticket = getTicketActual();
+        Log.d("fecha", "anio: " + anio + " mes: " + mes);
+
+        // 2. Obtener o crear el Ticket
+        Ticket ticket = getTicketAnioMes(anio, selectorMes(mes));
 
         if(ticket == null){
-            ticket = insertarTicket();
+            ticket = insertarTicket(selectorMes(mes),anio);
         }
+
+        // 3. Abrimos la DB para insertar la jornada
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
         values.put("id_ticket", ticket.getId());
         values.put("fecha", fechaString);
@@ -168,8 +177,9 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         values.put("cant_horas", numeroHoras);
 
         db.insert(TABLA_JORNADA, null, values);
-        db.close();
+        db.close(); // Cerramos antes de llamar a la siguiente función
 
+        // 4. Actualizar totales del ticket
         asignarHorasPedidosTicket(ticket);
     }
 
@@ -213,31 +223,39 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     /**
     * Función que inserta un ticket en la DB.
     */
-    public Ticket insertarTicket(){
+    public Ticket insertarTicket(String mes, int anio){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        int mesInt = LocalDate.now().getMonthValue();
-        String mes = selectorMes(mesInt);
+        String mesActual = selectorMes(LocalDate.now().getMonthValue());
+
+        // Comparamos los textos correctamente con .equals()
+        int estado = 1; // Por defecto activo
+        if (!mes.equals(mesActual) || anio != LocalDate.now().getYear()) {
+            estado = 0; // Si es un ticket del pasado (ej. metes una jornada vieja), nace inactivo
+        }
 
         Ticket ticket = new Ticket(0, mes, getDatosUsuario());
-        ticket.setAnio(LocalDate.now().getYear());
-        ticket.setEstado(1);
+        ticket.setAnio(anio);
+        ticket.setEstado(estado);
         ticket.setTotal_pedidos(0);
         ticket.setTotal_horas(0);
         ticket.setSalario_total(0);
 
         values.put("id_usuario", 1);
-        values.put("anio", LocalDate.now().getYear());
+        values.put("anio", anio);
         values.put("mes", mes);
-        values.put("estado", 1);
+        values.put("estado", estado);
         values.put("salario_total", 0);
         values.put("total_horas", 0);
         values.put("total_pedidos", 0);
-        values.put("tarifa_hora", getDatosUsuario().getTarifa_hora());
-        values.put("tarifa_pedido", getDatosUsuario().getTarifa_pedido());
-        values.put("modalidad", getDatosUsuario().getModalidad());
 
+        Usuario user = getDatosUsuario();
+        if (user != null) {
+            values.put("tarifa_hora", user.getTarifa_hora());
+            values.put("tarifa_pedido", user.getTarifa_pedido());
+            values.put("modalidad", user.getModalidad());
+        }
 
         long id = db.insert(TABLA_TICKET, null, values);
         ticket.setId((int) id);
@@ -250,7 +268,25 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     */
     public List<Ticket> getTickets() {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLA_TICKET + " WHERE id_usuario = 1 ORDER BY id ASC", null);
+        String consultaSQL = "SELECT * FROM " + TABLA_TICKET + " " +
+                "WHERE id_usuario = 1 " +
+                "ORDER BY " +
+                "anio DESC, " +
+                "CASE mes " +
+                "   WHEN 'Enero' THEN 1 " +
+                "   WHEN 'Febrero' THEN 2 " +
+                "   WHEN 'Marzo' THEN 3 " +
+                "   WHEN 'Abril' THEN 4 " +
+                "   WHEN 'Mayo' THEN 5 " +
+                "   WHEN 'Junio' THEN 6 " +
+                "   WHEN 'Julio' THEN 7 " +
+                "   WHEN 'Agosto' THEN 8 " +
+                "   WHEN 'Septiembre' THEN 9 " +
+                "   WHEN 'Octubre' THEN 10 " +
+                "   WHEN 'Noviembre' THEN 11 " +
+                "   WHEN 'Diciembre' THEN 12 " +
+                "END DESC";
+        Cursor cursor = db.rawQuery(consultaSQL, null);
         List<Ticket> tickets = new ArrayList<>();
 
         if(cursor.moveToFirst()){
