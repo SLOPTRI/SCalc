@@ -32,10 +32,26 @@ public class Ticket {
         this.modalidad = usuario.getModalidad();
     }
 
+    public Ticket(int id, String mes, int anio, int total_pedidos, double total_horas, double salario_total, int estado, Usuario usuario) {
+        this.id = id;
+        this.mes = mes;
+        this.anio = anio;
+        this.total_pedidos = total_pedidos;
+        this.total_horas = total_horas;
+        this.salario_total = salario_total;
+        this.estado = estado;
+        this.usuario = usuario;
+
+        if (usuario != null) {
+            this.tarifa_hora = usuario.getTarifa_hora();
+            this.tarifa_pedido = usuario.getTarifa_pedido();
+            this.modalidad = usuario.getModalidad();
+        }
+    }
+
     public Ticket(){}
 
     // Getters y Setters
-
 
     public int getId() {
         return id;
@@ -45,22 +61,11 @@ public class Ticket {
         this.id = id;
     }
 
-    public Usuario getusuario() {
-        return usuario;
-    }
-
-    public void setusuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public String getMes() {
         return mes;
     }
 
-    public void setMes(String mes) {
-        this.mes = mes;
-    }
-
+    public void setModalidad(String modalidad) { this.modalidad = modalidad; }
     public int getAnio() {
         return anio;
     }
@@ -102,35 +107,28 @@ public class Ticket {
         this.estado = estado;
     }
 
-    public double getTarifa_hora() {
-        return tarifa_hora;
-    }
-
-    public void setTarifa_hora(double tarifa_hora) {
-        this.tarifa_hora = tarifa_hora;
-    }
-
-    public double getTarifa_pedido() {
-        return tarifa_pedido;
-    }
-
-    public void setTarifa_pedido(double tarifa_pedido) {
-        this.tarifa_pedido = tarifa_pedido;
-    }
-
-    public String getModalidad() {
-        return modalidad;
-    }
-
-    public void setModalidad(String modalidad) {
-        this.modalidad = modalidad;
-    }
-
     // Se asigna el salario solo si el ticket esta activo, de lo contrario no se modifica.
     public void calcularSalarioTotal() {
         double salario_horas = this.total_horas * this.tarifa_hora;
         double salario_pedidos = this.total_pedidos * this.tarifa_pedido;
 
         this.salario_total = salario_horas + salario_pedidos;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", usuario=" + usuario +
+                ", mes='" + mes + '\'' +
+                ", anio=" + anio +
+                ", total_pedidos=" + total_pedidos +
+                ", total_horas=" + total_horas +
+                ", salario_total=" + salario_total +
+                ", estado=" + estado +
+                ", tarifa_hora=" + tarifa_hora +
+                ", tarifa_pedido=" + tarifa_pedido +
+                ", modalidad='" + modalidad + '\'' +
+                '}';
     }
 }

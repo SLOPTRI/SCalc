@@ -21,7 +21,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     // Nombre de la BD y su versión
     private static final String DATABASE_NAME = "scalc_database.db";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
 
     // Nombres de las Tablas
     public static final String TABLA_USUARIO = "usuario";
@@ -135,14 +135,28 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     */
     public void actualizarUser(String nombre, String modalidad, double tarifa_hora, double tarifa_pedido){
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        ContentValues valuesUser = new ContentValues();
 
-        values.put("nombre", nombre);
-        values.put("modalidad", modalidad);
-        values.put("tarifa_hora", tarifa_hora);
-        values.put("tarifa_pedido", tarifa_pedido);
+        valuesUser.put("nombre", nombre);
+        valuesUser.put("modalidad", modalidad);
+        valuesUser.put("tarifa_hora", tarifa_hora);
+        valuesUser.put("tarifa_pedido", tarifa_pedido);
 
-        db.update(TABLA_USUARIO, values, "id = 1", null);
+        db.update(TABLA_USUARIO, valuesUser, "id = 1", null);
+
+        int anioActual = LocalDate.now().getYear();
+        String mesActual = selectorMes(LocalDate.now().getMonthValue());
+
+        ContentValues valuesTicket = new ContentValues();
+        valuesTicket.put("modalidad", modalidad);
+        valuesTicket.put("tarifa_hora", tarifa_hora);
+        valuesTicket.put("tarifa_pedido", tarifa_pedido);
+
+        // Actualizamos la tabla ticket pero SOLO en el mes y año actuales
+        db.update(TABLA_TICKET, valuesTicket, "anio = ? AND mes = ?",
+                new String[]{String.valueOf(anioActual), mesActual});
+
+        forzarRecalcularTicket();
         db.close();
     }
 
@@ -175,6 +189,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         values.put("fecha", fechaString);
         values.put("cant_pedidos", numeroPedidos);
         values.put("cant_horas", numeroHoras);
+
+        Log.d("Ticket", ticket.toString());
 
         db.insert(TABLA_JORNADA, null, values);
         db.close(); // Cerramos antes de llamar a la siguiente función
@@ -264,8 +280,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     /**
-    * Función que devuelve una lista con todos los tickets de la DB.
-    */
+     * Función que devuelve una lista con todos los tickets de la DB usando sus datos históricos.
+     */
     public List<Ticket> getTickets() {
         SQLiteDatabase db = this.getReadableDatabase();
         String consultaSQL = "SELECT * FROM " + TABLA_TICKET + " " +
@@ -286,19 +302,33 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "   WHEN 'Noviembre' THEN 11 " +
                 "   WHEN 'Diciembre' THEN 12 " +
                 "END DESC";
+
         Cursor cursor = db.rawQuery(consultaSQL, null);
         List<Ticket> tickets = new ArrayList<>();
 
         if(cursor.moveToFirst()){
-
             do {
+                // 1. EXTRAER TARIFAS HISTÓRICAS DEL TICKET (Columnas 8, 9 y 10)
+                double tarifaHoraHist = cursor.getDouble(8);
+                double tarifaPedidoHist = cursor.getDouble(9);
+                String modalidadHist = cursor.getString(10);
 
-                Ticket newTicket = new Ticket(cursor.getInt(0), cursor.getString(2), getDatosUsuario());
-                newTicket.setAnio(cursor.getInt(3));
-                newTicket.setTotal_pedidos(cursor.getInt(4));
-                newTicket.setTotal_horas(cursor.getDouble(5));
-                newTicket.setSalario_total(cursor.getDouble(6));
-                newTicket.setEstado(cursor.getInt(7));
+                // 2. Crear el "Usuario Histórico"
+                Usuario usuarioHistorico = new Usuario(1, "Historico", modalidadHist, tarifaHoraHist, tarifaPedidoHist);
+
+                // 3. Crear el ticket de golpe usando tu nuevo constructor
+                Ticket newTicket = new Ticket(
+                        cursor.getInt(0),      // id
+                        cursor.getString(2),   // mes
+                        cursor.getInt(3),      // anio
+                        cursor.getInt(4),      // total_pedidos
+                        cursor.getDouble(5),   // total_horas
+                        cursor.getDouble(6),   // salario_total
+                        cursor.getInt(7),      // estado
+                        usuarioHistorico       // usuario con las tarifas antiguas
+                );
+                newTicket.setModalidad(modalidadHist);
+                Log.d("Ticket", newTicket.toString());
 
                 tickets.add(newTicket);
 
@@ -383,6 +413,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         ticket.setTotal_horas(totalHoras);
         ticket.setTotal_pedidos(totalPedidos);
         ticket.calcularSalarioTotal();
+
+        Log.d("salario", "salario total: " + ticket.getSalario_total());
 
         values.put("total_horas", ticket.getTotal_horas());
         values.put("total_pedidos", ticket.getTotal_pedidos());
@@ -478,5 +510,15 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
             anios.add(String.valueOf(java.time.LocalDate.now().getYear()));
         }
         return anios;
+    }
+
+    public void actualizarTicket(Ticket ticket){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("total_horas", ticket.getTotal_horas());
+        values.put("total_pedidos", ticket.getTotal_pedidos());
+        values.put("salario_total", ticket.getSalario_total());
+        db.update(TABLA_TICKET, values, "id = " + ticket.getId(), null);
+        db.close();
     }
 }

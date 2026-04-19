@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ public class BienvenidaActivity extends AppCompatActivity {
     private Button btnEmpezar;
     private EditText etNombreUser, etPrecioHoraUser, etPrecioPedidoUser;
     private AdminSQLiteOpenHelper admin;
+    private RadioGroup rgModalidad;
     private RadioButton rbAmbos, rbSoloHora, rbSoloPedido;
     private TextInputLayout tilPrecioHoraUser, tilPrecioPedidoUser;
     public boolean[] modalidad;
@@ -35,6 +37,7 @@ public class BienvenidaActivity extends AppCompatActivity {
         etNombreUser = findViewById(R.id.etNombreUser);
         etPrecioHoraUser = findViewById(R.id.etPrecioHoraUser);
         etPrecioPedidoUser = findViewById(R.id.etPrecioPedidoUser);
+        rgModalidad = findViewById(R.id.rgModalidad);
         rbAmbos = findViewById(R.id.rbAmbos);
         rbSoloHora = findViewById(R.id.rbSoloHora);
         rbSoloPedido = findViewById(R.id.rbSoloPedido);
@@ -43,6 +46,7 @@ public class BienvenidaActivity extends AppCompatActivity {
         tilPrecioHoraUser.setVisibility(View.GONE);
         tilPrecioPedidoUser.setVisibility(View.GONE);
 
+        rgModalidad.clearCheck();
         modalidad = new boolean[]{true,false,false};
 
         // Configuracion de las vistas
@@ -65,6 +69,7 @@ public class BienvenidaActivity extends AppCompatActivity {
             modalidad[0] = false;
             modalidad[1] = true;
             modalidad[2] = false;
+            etPrecioPedidoUser.setText("");
         });
 
         rbSoloPedido.setOnClickListener(v ->{
@@ -73,6 +78,7 @@ public class BienvenidaActivity extends AppCompatActivity {
             modalidad[0] = false;
             modalidad[1] = false;
             modalidad[2] = true;
+            etPrecioHoraUser.setText("");
         });
 
     }
